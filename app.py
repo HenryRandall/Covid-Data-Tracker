@@ -6,7 +6,6 @@ from flask import (
     jsonify,
     request,
     redirect)
-from config1 import username1,password1,host1,port1,database1
 import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
