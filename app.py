@@ -23,6 +23,7 @@ password1 = os.environ['password1']
 host1 = os.environ['host1']
 port1 = os.environ['port1']
 database1 = os.environ['database1']
+API_KEY = os.environ['API_KEY ']
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
 
@@ -36,7 +37,7 @@ def home():
     county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
     county_heatmap=county_heatmap.to_json(orient='records')
     county_heatmap=county_heatmap.replace("'",r"\'")
-    return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap)
+    return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
 def plots():
