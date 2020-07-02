@@ -48,6 +48,8 @@ def home():
 
 @app.route("/plots")
 def plots():
+    orders=pd.read_sql_query('select * from orders', con=engine1)
+    orders=orders.to_json(orient='records')
     state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
     state_cases=state_cases.to_json(orient='records')
     state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
@@ -68,7 +70,7 @@ def plots():
     county_deaths_daily=pd.read_sql_query('select * from county_deaths_daily', con=engine2)
     county_deaths_daily=county_deaths_daily.to_json(orient='records')
     county_deaths_daily=county_deaths_daily.replace("'",r"\'")
-    return render_template("plots.html")
+    return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, state_cases_daily=state_cases_daily, state_deaths_daily=state_deaths_daily, county_cases=county_cases, county_deaths=county_deaths, county_cases_daily=county_cases_daily, county_deaths_daily=county_deaths_daily)
 
 if __name__ == "__main__":
     app.run(debug=True)
