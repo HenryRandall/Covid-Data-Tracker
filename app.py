@@ -7,7 +7,7 @@ from flask import (
     request,
     redirect)
 import sqlalchemy
-from boto.s3.connection import s3Connection
+from boto.s3.connection import S3Connection
 import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
@@ -19,11 +19,11 @@ app = Flask(__name__)
 #################################################
 # Database Setup
 #################################################
-username1 = s3Connection(os.environ['username1'])
-password1 = s3Connection(os.environ['password1'])
-host1 = s3Connection(os.environ['host1'])
-port1 = s3Connection(os.environ['port1'])
-database1 = s3Connection(os.environ['database1'])
+username1 = S3Connection(os.environ['username1'])
+password1 = S3Connection(os.environ['password1'])
+host1 = S3Connection(os.environ['host1'])
+port1 = S3Connection(os.environ['port1'])
+database1 = S3Connection(os.environ['database1'])
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
 
