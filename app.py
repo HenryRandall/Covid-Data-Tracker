@@ -23,9 +23,16 @@ password1 = os.environ['password1']
 host1 = os.environ['host1']
 port1 = os.environ['port1']
 database1 = os.environ['database1']
+username2 = os.environ['username2']
+password2 = os.environ['password2']
+host2 = os.environ['host2']
+port2 = os.environ['port2']
+database2 = os.environ['databas2']
 API_KEY = os.environ['API_KEY']
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
+connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
+engine2 = create_engine(f'postgresql://{connection1}')
 
 # create route that renders index.html template
 @app.route("/")
@@ -45,7 +52,7 @@ def plots():
     state_cases=state_cases.to_json(orient='records')
     state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
     state_deaths=state_deaths.to_json(orient='records')
-    state_cases_daily=pd.read_sql_query('select * from state_daily', con=engine1)
+    state_cases_daily=pd.read_sql_query('select * from state_cases_daily', con=engine1)
     state_cases_daily=state_cases_daily.to_json(orient='records')
     state_deaths_daily=pd.read_sql_query('select * from state_deaths_daily', con=engine1)
     state_deaths_daily=state_deaths_daily.to_json(orient='records')
@@ -55,10 +62,10 @@ def plots():
     county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
     county_deaths=county_deaths.to_json(orient='records')
     county_deaths=county_deaths.replace("'",r"\'")
-    county_cases_daily=pd.read_sql_query('select * from county_cases_daily', con=engine1)
+    county_cases_daily=pd.read_sql_query('select * from county_cases_daily', con=engine12
     county_cases_daily=county_cases_daily.to_json(orient='records')
     county_cases_daily=county_cases_daily.replace("'",r"\'")
-    county_deaths_daily=pd.read_sql_query('select * from county_deaths_daily', con=engine1)
+    county_deaths_daily=pd.read_sql_query('select * from county_deaths_daily', con=engine2)
     county_deaths_daily=county_deaths_daily.to_json(orient='records')
     county_deaths_daily=county_deaths_daily.replace("'",r"\'")
     return render_template("plots.html")
