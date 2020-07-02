@@ -23,7 +23,7 @@ password1 = os.environ['password1']
 host1 = os.environ['host1']
 port1 = os.environ['port1']
 database1 = os.environ['database1']
-API_KEY = os.environ['API_KEY ']
+API_KEY = os.environ['API_KEY']
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
 
