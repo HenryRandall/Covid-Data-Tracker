@@ -7,7 +7,7 @@ from flask import (
     request,
     redirect)
 import sqlalchemy
-from boto.s3.connection import S3Connection
+from boto.s3.connection import s3Connection
 import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
