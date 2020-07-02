@@ -40,39 +40,48 @@
       <div class="col-md-12 jumbotron text-center">
         <h1>COVID Data Tracker</h1>
         <p>Use the interactive charts below to explore the dataset</p>
-        <!-- <p>{{county_heatmap}}</p> -->
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
-        <h1>USA Total Cases</h1>
-        <h2>USA Total Deaths</h2>
-        <h3>Cases and Deaths By County</h3>
+      <div class="col-md-6">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <td>USA Total Cases</td>
+              <td id="usa_cases"></td>
+            </tr>
+            <tr>
+              <td>USA Total Deaths</td>
+              <td id="usa_deaths"></td>
+            </tr>
+            <tr>
+              <td>USA This Week's Cases</td>
+              <td id="usa_thisweek"></td>
+            </tr>
+            <tr>
+              <td>USA Last Week's Cases</td>
+              <td id="usa_lastweek"></td>
+            </tr>
+            <tr>
+              <td>USA Positive Testing Rate</td>
+              <td id="usa_posrate"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-6">
         <div class="card border-secondary mb-3" style="max-width: 20rem;">
-            <div class="card-header">State Statistics</div>
-            <div class="card-body">
-              <h4 class="card-title">State Name</h4>
-              <div><strong>Order Date:</strong> <span id='order_date'></span></div>
-              <div><strong>Expiration Date:</strong> <span id='order_expiration_date'></span></div>
-              <div><strong>Total Cases:</strong> <span id='total_cases'></span></div>
-              <div><strong>Total Deaths:</strong> <span id='total_deaths'></span></div>
+          <div class="card-header">State Statistics</div>
+          <div class="card-body">
+            <h4 class="card-title", id='state_name'></h4>
+            <div><h6>Order Date:</h6> <h6 id='state_order'></h6></div>
+            <div><h6>Expiration Date:</h6> <h6  id='state_order_end'></h6></div>
+            <div><h6>Total Cases:</h6> <h6 id='state_cases'></h6></div>
+            <div><h6>Total Deaths:</h6> <h6 id='state_deaths'></h6></div>
+            <div><h6>Total Cases:</h6> <h6 id="state_thisweek"></h6></div>
+            <div><h6>Total Deaths:</h6> <h6 id="state_lastweek"></h6></div>
+            <div><h6>Total Deaths:</h6> <h6 id="state_posrate"></h6></div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-2">
-        <div class="well">
-          <h5>Choose a State:</h5>
-          <select id="selDataset" onchange="optionChanged(this.value)"></select>
         </div>
       </div>
     </div>
@@ -104,11 +113,10 @@
     var state_heatmap = JSON.parse('{{ state_heatmap | safe}}');
     var usa_heatmap = JSON.parse('{{ usa_heatmap | safe}}');
     var county_heatmap = JSON.parse('{{ county_heatmap | safe}}');
-    var API_KEY = '{{API_KEY}}';
   </script>
+  <script src="./static/js/config.js"></script>
   <script src="./static/js/app.js"></script>
   <script src="./static/js/logic.js"></script>
-
 </body>
 
 </html>

@@ -20,15 +20,62 @@ L.tileLayer(
     }
 ).addTo(myMap);
 
+// Design Popups
+var popupOptions =
+    {
+      'maxWidth': '500',
+      'maxHeight': '200',
+    //   'className' : 'custom-popup', // classname for another popup
+    }
+
 
 // Reference Data
 var statelink = "static/data/stateborders.json";
 var countylink = "static/data/countyborders.json";
 
-// consolelog data
-console.log(state_heatmap);
-console.log(usa_heatmap);
-console.log(county_heatmap);
+// USA data
+document.getElementById("usa_cases").innerHTML=usa_heatmap[0].total_cases
+document.getElementById("usa_deaths").innerHTML=usa_heatmap[0].total_deaths
+document.getElementById("usa_thisweek").innerHTML=usa_heatmap[0].thisweek_cases
+document.getElementById("usa_lastweek").innerHTML=usa_heatmap[0].lastweek_cases
+document.getElementById("usa_posrate").innerHTML=usa_heatmap[0].positive_rate.toFixed(2)
+
+
+// // consolelog data
+// console.log(state_heatmap);
+// console.log(usa_heatmap);
+// console.log(county_heatmap);
+
+// percentile funciton
+function get_percentile($percentile, $array) {
+    $array.sort(function (a, b) { return a - b; });
+  
+      $index = ($percentile/100) * $array.length;
+      if (Math.floor($index) == $index) {
+           $result = ($array[$index-1] + $array[$index])/2;
+      }
+      else {
+          $result = $array[Math.floor($index)];
+      }
+      return $result;
+  };
+
+// Calculate quartiles State
+var values=[];
+for (var state in state_heatmap) {
+    values=values.concat([state_heatmap[state].per100k]);
+};
+statelow=get_percentile(10,values);
+statemid=get_percentile(50,values);
+stateup=get_percentile(90,values);
+
+var valuescounty=[];
+for (var county in county_heatmap) {
+    valuescounty=valuescounty.concat([county_heatmap[county].per100k]);
+};
+countylow=get_percentile(10,valuescounty);
+countymid=get_percentile(50,valuescounty);
+countyup=get_percentile(90,valuescounty);
 
 // Hover over State
 function hoverOverState(stateName) {
@@ -38,13 +85,13 @@ function hoverOverState(stateName) {
             break;
         }
     }
-    return `${state_heatmap[index].state}\n
-    Total Cases: ${state_heatmap[index].total_cases}
-    Total Deaths: ${state_heatmap[index].total_deaths}
-    Last Week's Cases: ${state_heatmap[index].lastweek_cases}
-    This Week's Cases: ${state_heatmap[index].thisweek_cases}
-    Cases per 100K people ${state_heatmap[index].per100k}
-    Testing Positivity Rate ${state_heatmap[index].positive_rate}
+    return `${state_heatmap[index].state} <br>
+    Total Cases: ${state_heatmap[index].total_cases} <br>
+    Total Deaths: ${state_heatmap[index].total_deaths} <br>
+    Last Week's Cases: ${state_heatmap[index].lastweek_cases} <br>
+    This Week's Cases: ${state_heatmap[index].thisweek_cases} <br>
+    Cases per 100K people ${state_heatmap[index].per100k.toFixed(0)} <br>
+    Testing Positivity Rate ${state_heatmap[index].positive_rate.toFixed(2)}%
     `;
 }
 
@@ -57,7 +104,13 @@ function hoverOverCounty(statefip, countyfip) {
             break;
         }
     }
-    return `Total Cases: ${county_heatmap[index].total_cases}`;
+    return `${county_heatmap[index].county}<br>
+    Total Cases: ${county_heatmap[index].total_cases} <br>
+    Total Deaths: ${county_heatmap[index].total_deaths} <br>
+    Last Week's Cases: ${county_heatmap[index].lastweek_cases} <br>
+    This Week's Cases: ${county_heatmap[index].thisweek_cases} <br>
+    Cases per 100K people ${county_heatmap[index].per100k.toFixed(0)} <br>
+    `;
 }
 
 // Choose County Colors
@@ -72,15 +125,25 @@ function chooseColorCounty(statefip, countyfip) {
             maxcases = county_heatmap[county].per100k;
         }
     }
-    var perc = (county_heatmap[index].per100k / maxcases) * 100;
+    var perc = county_heatmap[index].per100k;
     var r, g, b = 0;
-    if (perc < 50) {
+    if (perc<countylow){
         g = 255;
-        r = Math.round(5.1 * perc);
+        r = 0;
+    } 
+    else if (perc<countymid){
+        var relave=((perc-countylow)/(countymid-countylow))
+        g = 255;
+        r = Math.round(255 * relave);
+    }
+    else if (perc<countyup){
+        var relave=((perc-countymid)/(countyup-countymid))
+        r = 255;
+        g = Math.round(255-(255 * relave));
     }
     else {
         r = 255;
-        g = Math.round(510 - 5.10 * perc);
+        g = 0;
     }
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
@@ -97,46 +160,49 @@ function chooseColorState(stateName) {
             maxcases = state_heatmap[state].per100k;
         }
     }
-    var perc = (state_heatmap[index].per100k / maxcases) * 100;
+    var perc = state_heatmap[index].per100k;
     var r, g, b = 0;
-    if (perc < 50) {
-
+    if (perc<statelow){
         g = 255;
-        r = Math.round(5.1 * perc);
+        r = 0;
+    } 
+    else if (perc<statemid){
+        var relave=((perc-statelow)/(statemid-statelow))
+        g = 255;
+        r = Math.round(255 * relave);
+    }
+    else if (perc<stateup){
+        var relave=((perc-statemid)/(stateup-statemid))
+        r = 255;
+        g = Math.round(255-(255 * relave));
     }
     else {
         r = 255;
-        g = Math.round(510 - 5.10 * perc);
+        g = 0;
     }
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
 }
 
-// Choose County Colors
-function chooseColorCounty(statefip, countyfip) {
-    var maxcases = 0;
-    var fip = statefip + countyfip;
-    for (var county in county_heatmap) {
-        if (county_heatmap[county].fips == fip) {
-            index = county;
-        }
-        if (county_heatmap[county].per100k > maxcases) {
-            maxcases = county_heatmap[county].per100k;
+// fill state chart
+function stateChart(stateName) {
+    document.getElementById("state_name").innerHTML=stateName;
+    for (var state in state_heatmap) {
+        if ((state_heatmap[state].state.toUpperCase()) == stateName.toUpperCase()) {
+            index = state;
+            break;
         }
     }
-    var perc = (county_heatmap[index].per100k / maxcases) * 100;
-    var r, g, b = 0;
-    if (perc < 50) {
-        g = 255;
-        r = Math.round(5.1 * perc);
-    }
-    else {
-        r = 255;
-        g = Math.round(510 - 5.10 * perc);
-    }
-    var h = r * 0x10000 + g * 0x100 + b * 0x1;
-    return '#' + ('000000' + h.toString(16)).slice(-6);
+    document.getElementById("state_order").innerHTML=state_heatmap[index].order_date
+    document.getElementById("state_order_end").innerHTML=state_heatmap[index].order_expiration_date
+    document.getElementById("state_cases").innerHTML=state_heatmap[index].total_cases
+    document.getElementById("state_deaths").innerHTML=state_heatmap[index].total_deaths
+    document.getElementById("state_thisweek").innerHTML=state_heatmap[index].thisweek_cases
+    document.getElementById("state_lastweek").innerHTML=state_heatmap[index].lastweek_cases
+    document.getElementById("state_posrate").innerHTML=state_heatmap[index].positive_rate.toFixed(2)
 }
+
+stateChart('North Carolina')
 
 // Pulling in the State GeoJSON
 var xhReq = new XMLHttpRequest();
@@ -163,9 +229,6 @@ var countymap = L.geoJson(countyborders, {
 
     onEachFeature: function (feature, layer) {
         layer.on({
-            click: function (event) {
-                myMap.fitBounds(event.target.getBounds());
-            },
             mouseover: function (event) {
                 event.target.setStyle({
                     fillOpacity: 0.9,
@@ -177,9 +240,10 @@ var countymap = L.geoJson(countyborders, {
                 });
             },
         });
-        layer.bindPopup(`
-            <h1>${hoverOverCounty(feature.properties.STATE, feature.properties.COUNTY)}</h1>
-        `);
+        layer.bindPopup(
+            `<h1>${hoverOverCounty(feature.properties.STATE, feature.properties.COUNTY)}</h1>`,
+            popupOptions
+        );
     },
 });
 
@@ -197,8 +261,10 @@ var statemap = L.geoJson(stateborders, {
         layer.on({
             click: function (event) {
                 myMap.fitBounds(event.target.getBounds());
+                stateChart(feature.properties.NAME)
             },
             mouseover: function (event) {
+                layer.openPopup();
                 event.target.setStyle({
                     fillOpacity: 0.9,
                 });
@@ -209,9 +275,10 @@ var statemap = L.geoJson(stateborders, {
                 });
             },
         });
-        layer.bindPopup(`
-            <h1>${hoverOverState(feature.properties.NAME)}</h1>
-        `);
+        layer.bindPopup(
+            `<h1>${hoverOverState(feature.properties.NAME)}</h1>`,
+            popupOptions
+        );
     },
 });
 

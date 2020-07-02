@@ -13,3 +13,13 @@ body {
     border: 1px solid black;
     border-radius: 8px;
 }
+
+.leaflet-container h1 {
+    font-weight: bold;
+    color:(--secondary);
+    font-size: 14px;
+  }
+
+  h6 {
+    display:inline;
+}
