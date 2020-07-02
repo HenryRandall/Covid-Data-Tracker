@@ -167,12 +167,17 @@
     crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <!-- <script>
-    var state_heatmap = JSON.parse('{{ state_heatmap | safe}}');
-    var usa_heatmap = JSON.parse('{{ usa_heatmap | safe}}');
-    var county_heatmap = JSON.parse('{{ county_heatmap | safe}}');
-    var API_KEY = '{{API_KEY}}';
-  </script> -->
+  <script>
+    var orders = JSON.parse('{{ orders | safe}}');
+    var state_cases = JSON.parse('{{ state_cases | safe}}');
+    var state_deaths = JSON.parse('{{ state_deaths | safe}}');
+    var state_cases_daily = JSON.parse('{{ state_cases_daily | safe}}');
+    var state_deaths_daily = JSON.parse('{{ state_deaths_daily | safe}}');
+    var county_cases = JSON.parse('{{ county_cases | safe}}');
+    var county_deaths = JSON.parse('{{ county_deaths | safe}}');
+    var county_cases_daily = JSON.parse('{{ county_cases_daily | safe}}');
+    var county_deaths_daily = JSON.parse('{{ county_deaths_daily | safe}}');
+  </script>
   <script src="./static/js/app.js"></script>
   <script src="./static/js/logic.js"></script>
 
