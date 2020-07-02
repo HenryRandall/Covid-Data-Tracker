@@ -32,7 +32,7 @@ API_KEY = os.environ['API_KEY']
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
 connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
-engine2 = create_engine(f'postgresql://{connection1}')
+engine2 = create_engine(f'postgresql://{connection2}')
 
 # create route that renders index.html template
 @app.route("/")
