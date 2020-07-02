@@ -62,7 +62,7 @@ def plots():
     county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
     county_deaths=county_deaths.to_json(orient='records')
     county_deaths=county_deaths.replace("'",r"\'")
-    county_cases_daily=pd.read_sql_query('select * from county_cases_daily', con=engine12
+    county_cases_daily=pd.read_sql_query('select * from county_cases_daily', con=engine2)
     county_cases_daily=county_cases_daily.to_json(orient='records')
     county_cases_daily=county_cases_daily.replace("'",r"\'")
     county_deaths_daily=pd.read_sql_query('select * from county_deaths_daily', con=engine2)
