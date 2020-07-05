@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <table class="table table-hover">
           <tbody>
             <tr>
@@ -69,7 +69,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card border-secondary mb-3" style="max-width: 20rem;">
           <div class="card-header">State Statistics</div>
           <div class="card-body">
@@ -83,6 +83,43 @@
             <div><h6>Positivity Rate:</h6> <h6 id="state_posrate"></h6><h6>%</h6></div>
           </div>
         </div>
+      </div>
+      <div class="col-md-4">
+        <form id="valuetype">
+          <fieldset class="form-group">
+            <legend>Heatmap Data</legend>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="per100k" checked="">
+                  per100k
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="total_cases">
+                  total_cases
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="total_deaths">
+                  total_deaths
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="thisweek_cases">
+                  thisweek_cases
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="thisweek_deaths">
+                  thisweek_deaths
+                </label>
+              </div>     
+          </fieldset>
+        </form>
       </div>
     </div>
     <div class="row">
