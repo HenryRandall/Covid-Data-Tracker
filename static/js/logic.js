@@ -38,7 +38,7 @@ document.getElementById("usa_cases").innerHTML=usa_heatmap[0].total_cases
 document.getElementById("usa_deaths").innerHTML=usa_heatmap[0].total_deaths
 document.getElementById("usa_thisweek").innerHTML=usa_heatmap[0].thisweek_cases
 document.getElementById("usa_lastweek").innerHTML=usa_heatmap[0].lastweek_cases
-document.getElementById("usa_posrate").innerHTML=usa_heatmap[0].positive_rate.toFixed(2)
+document.getElementById("usa_posrate").innerHTML=usa_heatmap[0].positive_rate.toFixed(2)+('%')
 
 
 // // consolelog data
