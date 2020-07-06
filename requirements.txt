@@ -6,3 +6,4 @@ flask_sqlalchemy>=2.0.0
 pandas>=1.0.5
 boto>=1.14.15
 psycopg2>=2.6.1
+Flask-Caching
