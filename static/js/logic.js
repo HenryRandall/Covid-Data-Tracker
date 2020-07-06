@@ -57,7 +57,6 @@ function chooseColorCounty(statefip, countyfip) {
         }
     }
     var perc = county_heatmap[index][valuetype];
-    console.log(valuetype)
     var r, g, b = 0;
     if (perc<countylow){
         g = 255;
@@ -184,16 +183,15 @@ document.getElementById("usa_thisweek").innerHTML=usa_heatmap[0].thisweek_cases
 document.getElementById("usa_lastweek").innerHTML=usa_heatmap[0].lastweek_cases
 document.getElementById("usa_posrate").innerHTML=usa_heatmap[0].positive_rate.toFixed(2)+('%')
 
-
-
-
-d3.select("#valuetype").on('change', function() {
+const selectElement = document.querySelector('#valuetype');
+selectElement.addEventListener('change', (event) => {
+    myMap.off();
+    myMap.remove();
     var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
-    console.log(valuetype);
-    maps(valuetype);
-  });
-
-
+    myMap=maps(valuetype);
+}, {
+    passive: true
+});
 
 
 function maps(valuetype) {
@@ -201,15 +199,15 @@ function maps(valuetype) {
     var container = L.DomUtil.get('map');
     if(container != null){
         container._leaflet_id = null;
-    }
+    };
 
     var myMap = L.map("map", {
         center: [45.8283, -108.5795],
-        zoom: 3
+        zoom: 3,
+        dragging: true
     });
-    
+
     L.tileLayer(
-    
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
             tileSize: 512,
@@ -334,20 +332,10 @@ function maps(valuetype) {
     });
 
     statemap.addTo(myMap);
+    return myMap;
 }
 
+
 var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
-maps(valuetype);
-stateChart('North Carolina')
-
-
-
-
-
-
-
-
-
-
-
-
+myMap=maps(valuetype);
+stateChart('North Carolina');
