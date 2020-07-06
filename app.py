@@ -73,4 +73,5 @@ def plots():
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, state_cases_daily=state_cases_daily, state_deaths_daily=state_deaths_daily, county_cases=county_cases, county_deaths=county_deaths, county_cases_daily=county_cases_daily, county_deaths_daily=county_deaths_daily)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.jinja_env.cache = {}
+    app.run(debug=False)
