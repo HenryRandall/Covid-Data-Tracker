@@ -104,8 +104,15 @@ function StateGraph(stateName,type,variable) {
   }
 
   data=df[index];
-  console.log(data);
+  delete data["State"];
+  dates=Object.keys(data);
+  var values=[];
+  for (var date in dates) {
+    values.push(data[dates[date]]);
+  }
 
+  console.log(dates);
+  console.log(values);
 
 };
 
@@ -134,41 +141,19 @@ function CountyGraph(stateName,countyName,type,variable) {
   }
 
   data=df[index];
-  console.log(data);
+  delete data["State"];
+  delete data["County"];
+  delete data["FIPS"];
+  dates=Object.keys(data);
+  var values=[];
+  for (var date in dates) {
+    values.push(data[dates[date]]);
+  }
+
+
+  console.log(dates);
+  console.log(values);
 
 };
 
 init();
-
-// var trace1 = {
-//     x: Date,
-//     y: ["1,2,7,4,5"],
-//     type: "plot"
-//   };
-  
-//   var data = [trace1];
-  
-//   var layout = {
-//     title: "State Plots",
-//     xaxis:{title: "Date"},
-//     yaxis:{title: "# of cases/deaths"}
-//   };
-  
-//   Plotly.newPlot("Stateplot", data, layout);
-  
-//   var trace2 = {
-//     x: Date,
-//     y: ["1,2,7,4,5"],
-//     type: "plot"
-//   };
-  
-//   var data = [trace2];
-  
-//   var layout = {
-//     title: "County Plots",
-//     xaxis:{title: "Date"},
-//     yaxis:{title: "# of cases/deaths"}
-//   };
-  
-//   Plotly.newPlot("Countyplot", data, layout);
-  
