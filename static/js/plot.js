@@ -110,7 +110,7 @@ function StateGraph(stateName,type,variable) {
   for (var date in dates) {
     values.push(data[dates[date]]);
   }
-  
+
   var chartData = {
     labels: dates,
     datasets: [{
@@ -119,7 +119,7 @@ function StateGraph(stateName,type,variable) {
   };
 
   $('#Splot').remove(); // this is my <canvas> element
-  $('#Sgraph-container').append('<canvas id="Splot"></canvas>');
+  $('#Sgraph-container').html('<canvas id="Splot"></canvas>');
   var Splot = document.getElementById("Splot");
   new Chart(Splot, {
     type: 'line',
@@ -172,7 +172,7 @@ function CountyGraph(stateName,countyName,type,variable) {
   for (var date in dates) {
     values.push(data[dates[date]]);
   }
-  
+
   var chartData = {
     labels: dates,
     datasets: [{
@@ -181,7 +181,7 @@ function CountyGraph(stateName,countyName,type,variable) {
   };
 
   $('#Cplot').remove(); // this is my <canvas> element
-  $('#Cgraph-container').append('<canvas id="Cplot"></canvas>');
+  $('#Cgraph-container').html('<canvas id="Cplot"></canvas>');
   var Cplot = document.getElementById("Cplot");
   new Chart(Cplot, {
     type: 'line',
