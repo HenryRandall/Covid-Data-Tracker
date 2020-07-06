@@ -19,73 +19,84 @@
   <link rel="stylesheet" type="text/css" href="static\style\style.css">
   <link rel="stylesheet" type="text/css" href="static\style\lux.min.css">
 
-  <link rel="shortcut icon" href="#" />
-  
 </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="/">Home</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/plots">Plots</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
 
-    <h1>State Plots</h1>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/plots">Plots</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <label for="States">State:</label>
-    <select id="States">
-    </select>
+  <h1>State Plots</h1>
 
-    <label for="Total or Daily">Total or Daily:</label>
-    <select id="TotalS" >
-        <option value="Daily">Daily</option>
-        <option value="Total">Total</option>
-    </select>
-      
-    <label for="Cases or Deaths">Cases or Deaths:</label>
-    <select id="ResultS" >
-        <option value="Cases">Cases</option>
-        <option value="Deaths">Deaths</option>
-    </select>
+  <label for="States">State:</label>
+  <select id="States">
+  </select>
 
+  <label for="Total or Daily">Total or Daily:</label>
+  <select id="TotalS" >
+      <option value="Daily">Daily</option>
+      <option value="Total">Total</option>
+  </select>
+    
+  <label for="Cases or Deaths">Cases or Deaths:</label>
+  <select id="ResultS" >
+      <option value="Cases">Cases</option>
+      <option value="Deaths">Deaths</option>
+  </select>
 
-  </body>
-  
-  <body>
-      <div id="Stateplot"></div>
-  </body>
+  <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div id="Sgraph-container" class="card-body">
+                    <canvas id="Splot"></canvas>
+                </div>
+            </div>
+        </div>
+      </div>     
+  </div>
 
-  <body>
-      <h1>County Plots</h1>
+  <h1>County Plots</h1>
 
-      <label for="Counties">Counties:</label>
+  <label for="Counties">Counties:</label>
 
-          <select id="Counties" >
-          </select>
+  <select id="Counties" >
+  </select>
 
-          <label for="Total or Daily">Total or Daily:</label>
-          <select id="TotalC" >
-              <option value="Daily">Daily</option>
-              <option value="Total">Total</option>
-          </select>
-          
-      <label for="Cases or Deaths">Cases or Deaths:</label>
-          <select id="ResultC" >
-              <option value="Cases">Cases</option>
-              <option value="Deaths">Deaths</option>
-          </select>
+  <label for="Total or Daily">Total or Daily:</label>
+  <select id="TotalC" >
+      <option value="Daily">Daily</option>
+      <option value="Total">Total</option>
+  </select>
+    
+  <label for="Cases or Deaths">Cases or Deaths:</label>
+  <select id="ResultC" >
+      <option value="Cases">Cases</option>
+      <option value="Deaths">Deaths</option>
+  </select>
 
-          <body>
-              <div id="Countyplot"></div>
-          </body>
-  </body>
+  <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div id="Cgraph-container" class="card-body">
+                    <canvas id="Cplot"></canvas>
+                </div>
+            </div>
+        </div>
+      </div>     
+  </div>
+</body>
 
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -98,6 +109,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
     integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="

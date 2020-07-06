@@ -103,7 +103,7 @@ function StateGraph(stateName,type,variable) {
     }
   }
 
-  data=df[index];
+  data=JSON.parse(JSON.stringify(df[index]));
   delete data["State"];
   dates=Object.keys(data);
   var values=[];
@@ -114,6 +114,33 @@ function StateGraph(stateName,type,variable) {
   console.log(dates);
   console.log(values);
 
+
+  var chartData = {
+    labels: dates,
+    datasets: [{
+      data: values,
+    }]
+  };
+
+  $('#Splot').remove(); // this is my <canvas> element
+  $('#Sgraph-container').append('<canvas id="Splot"></canvas>');
+  var Splot = document.getElementById("Splot");
+  new Chart(Splot, {
+    type: 'line',
+    data: chartData,
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false
+          }
+        }]
+      },
+      legend: {
+        display: false
+      }
+    }
+  });
 };
 
 function CountyGraph(stateName,countyName,type,variable) {
@@ -140,7 +167,7 @@ function CountyGraph(stateName,countyName,type,variable) {
     }
   }
 
-  data=df[index];
+  data=JSON.parse(JSON.stringify(df[index]));
   delete data["State"];
   delete data["County"];
   delete data["FIPS"];
@@ -154,6 +181,33 @@ function CountyGraph(stateName,countyName,type,variable) {
   console.log(dates);
   console.log(values);
 
+
+  var chartData = {
+    labels: dates,
+    datasets: [{
+      data: values,
+    }]
+  };
+
+  $('#Cplot').remove(); // this is my <canvas> element
+  $('#Cgraph-container').append('<canvas id="Cplot"></canvas>');
+  var Cplot = document.getElementById("Cplot");
+  new Chart(Cplot, {
+    type: 'line',
+    data: chartData,
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false
+          }
+        }]
+      },
+      legend: {
+        display: false
+      }
+    }
+  });
 };
 
 init();
