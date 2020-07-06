@@ -110,11 +110,7 @@ function StateGraph(stateName,type,variable) {
   for (var date in dates) {
     values.push(data[dates[date]]);
   }
-
-  console.log(dates);
-  console.log(values);
-
-
+  
   var chartData = {
     labels: dates,
     datasets: [{
@@ -176,12 +172,7 @@ function CountyGraph(stateName,countyName,type,variable) {
   for (var date in dates) {
     values.push(data[dates[date]]);
   }
-
-
-  console.log(dates);
-  console.log(values);
-
-
+  
   var chartData = {
     labels: dates,
     datasets: [{
