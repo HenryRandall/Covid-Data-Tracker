@@ -121,13 +121,24 @@ function stateChart(stateName) {
             break;
         }
     }
-    document.getElementById("state_order").innerHTML=state_heatmap[index].order_date
-    document.getElementById("state_order_end").innerHTML=state_heatmap[index].order_expiration_date
-    document.getElementById("state_cases").innerHTML=state_heatmap[index].total_cases
-    document.getElementById("state_deaths").innerHTML=state_heatmap[index].total_deaths
-    document.getElementById("state_thisweek").innerHTML=state_heatmap[index].thisweek_cases
-    document.getElementById("state_lastweek").innerHTML=state_heatmap[index].lastweek_cases
-    document.getElementById("state_posrate").innerHTML=state_heatmap[index].positive_rate.toFixed(2)
+
+    if (state_heatmap[index].order_date != null) {
+        document.getElementById("state_order").innerHTML=state_heatmap[index].order_date
+    }
+    else{
+        document.getElementById("state_order").innerHTML='None'
+    };
+    if (state_heatmap[index].order_expiration_date != null) {
+        document.getElementById("state_order_end").innerHTML=state_heatmap[index].order_expiration_date
+    }
+    else {
+        document.getElementById("state_order_end").innerHTML='None'
+    };
+    document.getElementById("state_cases").innerHTML=state_heatmap[index].total_cases;
+    document.getElementById("state_deaths").innerHTML=state_heatmap[index].total_deaths;
+    document.getElementById("state_thisweek").innerHTML=state_heatmap[index].thisweek_cases;
+    document.getElementById("state_lastweek").innerHTML=state_heatmap[index].lastweek_cases;
+    document.getElementById("state_posrate").innerHTML=state_heatmap[index].positive_rate.toFixed(2);
 };
 
 // percentile funciton
