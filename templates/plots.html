@@ -112,6 +112,7 @@
   crossorigin=""></script>
   <!-- D3 JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+  <script>
     var orders = JSON.parse('{{ orders | safe}}');
     var state_cases = JSON.parse('{{ state_cases | safe}}');
     var state_deaths = JSON.parse('{{ state_deaths | safe}}');
