@@ -2,6 +2,8 @@
 // We set the longitude, latitude, and the starting zoom level
 // This gets inserted into the div with an id of 'map'
 
+console.log(usa_heatmap[0])
+document.getElementById('last date').innerHTML=usa_heatmap[0].lastdate
 
 // Design Popups
 var popupOptions =
