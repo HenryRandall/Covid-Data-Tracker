@@ -2,27 +2,29 @@
 <html lang="en">
 
 <head>
+  <!-- Setup and title page -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>COVID Data Tracker</title>
+  <title>COVID State and Local Plots</title>
   
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
-    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
 
   <!-- d3 JavaScript -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
 
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="static\style\style.css">
+
+  <!-- Bootswatch CSS -->
   <link rel="stylesheet" type="text/css" href="static\style\lux.min.css">
 
   <link rel="shortcut icon" href="#" />
 </head>
 
 <body>
+  <!-- Nav Bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="/">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,25 +39,26 @@
     </div>
   </nav>
 
-  <h1>State Plots</h1>
-
-  <label for="States">State:</label>
-  <select id="States">
-  </select>
-
-  <label for="Total or Daily">Total or Daily:</label>
-  <select id="TotalS" >
-      <option value="Daily">Daily</option>
-      <option value="Total">Total</option>
-  </select>
-    
-  <label for="Cases or Deaths">Cases or Deaths:</label>
-  <select id="ResultS" >
-      <option value="Cases">Cases</option>
-      <option value="Deaths">Deaths</option>
-  </select>
-
+  <!-- Main page container -->
   <div class="container">
+    <!-- State Plot selectors -->
+    <div class="row">
+      <h1>State Plots</h1>
+      <!-- Add dropdown elements for state plots-->
+      <label for="States">State:</label>
+      <select id="States"></select>
+      <label for="Total or Daily">Total or Daily:</label>
+      <select id="TotalS" >
+          <option value="Daily">Daily</option>
+          <option value="Total">Total</option>
+      </select>
+      <label for="Cases or Deaths">Cases or Deaths:</label>
+      <select id="ResultS" >
+          <option value="Cases">Cases</option>
+          <option value="Deaths">Deaths</option>
+      </select>
+    </div>
+    <!-- State Plot -->
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -65,29 +68,27 @@
             </div>
         </div>
       </div>     
-  </div>
 
-  <h1>County Plots</h1>
-
-  <label for="Counties">County:</label>
-
-  <select id="Counties" >
-  </select>
-
-  <label for="Total or Daily">Total or Daily:</label>
-  <select id="TotalC" >
-      <option value="Daily">Daily</option>
-      <option value="Total">Total</option>
-  </select>
-    
-  <label for="Cases or Deaths">Cases or Deaths:</label>
-  <select id="ResultC" >
-      <option value="Cases">Cases</option>
-      <option value="Deaths">Deaths</option>
-  </select>
-
-  <div class="container">
+    <!-- State Plot selectors -->
     <div class="row">
+      <h1>County Plots</h1>
+      <!-- Add dropdown elements for state plots-->
+      <label for="Counties">County:</label>
+      <select id="Counties"></select>
+      <label for="Total or Daily">Total or Daily:</label>
+      <select id="TotalC" >
+          <option value="Daily">Daily</option>
+          <option value="Total">Total</option>
+      </select>
+      <label for="Cases or Deaths">Cases or Deaths:</label>
+      <select id="ResultC" >
+          <option value="Cases">Cases</option>
+          <option value="Deaths">Deaths</option>
+      </select>
+    </div>
+    <!-- State Plot -->
+    <div class="row">
+      <div class="row">
         <div class="col-12">
             <div class="card">
                 <div id="Cgraph-container" class="card-body">
@@ -95,23 +96,24 @@
                 </div>
             </div>
         </div>
-      </div>     
+      </div>   
+    </div>
   </div>
+  
 </body>
 
 
-  <!-- JS, Popper.js, and jQuery -->
+  <!-- Popper.js, and jQuery for bootstrap-->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-  integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-  crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js" integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q==" crossorigin=""></script>
   <!-- D3 JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+  <!-- Parse JSONs improted in the flask app -->
   <script>
     var orders = JSON.parse('{{ orders | safe}}');
     var state_cases = JSON.parse('{{ state_cases | safe}}');
@@ -123,6 +125,6 @@
     var county_cases_daily = JSON.parse('{{ county_cases_daily | safe}}');
     var county_deaths_daily = JSON.parse('{{ county_deaths_daily | safe}}');
   </script>
+  <!-- Run our script -->
   <script src="./static/js/plot.js"></script>
-
 </html>
