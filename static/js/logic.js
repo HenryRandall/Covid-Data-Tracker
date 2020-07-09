@@ -1,25 +1,24 @@
-// Creating our initial map object
-// We set the longitude, latitude, and the starting zoom level
-// This gets inserted into the div with an id of 'map'
-
+// Render the last date of data pulled
 document.getElementById('last date').innerHTML=usa_heatmap[0].lastdate
 
-// Design Popups
+// Format the popups to be used in the map
 var popupOptions =
     {
       'maxWidth': '500',
       'maxHeight': '200',
-    //   'className' : 'custom-popup', // classname for another popup
 };
 
-// Hover over State
+// Add data to the Popups for States
 function hoverOverState(stateName) {
+    // Find the Index for the State
     for (var state in state_heatmap) {
         if ((state_heatmap[state].state.toUpperCase()) == stateName.toUpperCase()) {
+            // If you found the correct state, set index and break
             index = state;
             break;
         }
     }
+    // Return the information for the state
     return `${state_heatmap[index].state} <br>
     Total Cases: ${state_heatmap[index].total_cases} <br>
     Total Deaths: ${state_heatmap[index].total_deaths} <br>
@@ -30,15 +29,18 @@ function hoverOverState(stateName) {
     `;
 };
 
-// Hover over County
+// Add data to the Popups for county
 function hoverOverCounty(statefip, countyfip) {
+    // Find the Index for the county
     var fip = statefip + countyfip;
     for (var county in county_heatmap) {
         if (county_heatmap[county].fips == fip) {
+            // If you found the correct county, set index and break
             index = county;
             break;
         }
     }
+    // Return the information for the county
     return `${county_heatmap[index].county}<br>
     Total Cases: ${county_heatmap[index].total_cases} <br>
     Total Deaths: ${county_heatmap[index].total_deaths} <br>
@@ -50,19 +52,24 @@ function hoverOverCounty(statefip, countyfip) {
 
 // Choose County Colors
 function chooseColorCounty(statefip, countyfip) {
+    // Pull the type of value selected for use in heatmap
     var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
     var fip = statefip + countyfip;
+    // Find county and set index
     for (var county in county_heatmap) {
         if (county_heatmap[county].fips == fip) {
             index = county;
         }
     }
+    // Pull value for county
     var perc = county_heatmap[index][valuetype];
     var r, g, b = 0;
+    // In below the lower bound, go green
     if (perc<countylow){
         g = 255;
         r = 0;
     } 
+    // If between the lower and upper bound, gradient of green->yellow->red
     else if (perc<countymid){
         var relave=((perc-countylow)/(countymid-countylow))
         g = 255;
@@ -73,28 +80,35 @@ function chooseColorCounty(statefip, countyfip) {
         r = 255;
         g = Math.round(255-(255 * relave));
     }
+    // If above the upper bound, red
     else {
         r = 255;
         g = 0;
     }
+    // Calculate hexcode color and return
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
 };
 
 // Choose State Colors
 function chooseColorState(stateName) {
+    // Pull the type of value selected for use in heatmap
     var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
+    // Find state and set index
     for (var state in state_heatmap) {
         if ((state_heatmap[state].state.toUpperCase()) == stateName.toUpperCase()) {
             index = state;
         }
     }
+    // Pull value for state
     var perc = state_heatmap[index][valuetype];
     var r, g, b = 0;
+    // In below the lower bound, go green
     if (perc<statelow){
         g = 255;
         r = 0;
     } 
+    // If between the lower and upper bound, gradient of green->yellow->red
     else if (perc<statemid){
         var relave=((perc-statelow)/(statemid-statelow))
         g = 255;
@@ -105,36 +119,42 @@ function chooseColorState(stateName) {
         r = 255;
         g = Math.round(255-(255 * relave));
     }
+    // If above the upper bound, red
     else {
         r = 255;
         g = 0;
     }
+    // Calculate hexcode color and return
     var h = r * 0x10000 + g * 0x100 + b * 0x1;
     return '#' + ('000000' + h.toString(16)).slice(-6);
 };
 
 // fill state chart
 function stateChart(stateName) {
+    // Set name of state
     document.getElementById("state_name").innerHTML=stateName;
+    // Find state and set index
     for (var state in state_heatmap) {
         if ((state_heatmap[state].state.toUpperCase()) == stateName.toUpperCase()) {
             index = state;
             break;
         }
     }
-
+    // If there is an order, print. If not, print none
     if (state_heatmap[index].order_date != null) {
         document.getElementById("state_order").innerHTML=state_heatmap[index].order_date
     }
     else{
         document.getElementById("state_order").innerHTML='None'
     };
+    // If there is an order, print. If not, print none
     if (state_heatmap[index].order_expiration_date != null) {
         document.getElementById("state_order_end").innerHTML=state_heatmap[index].order_expiration_date
     }
     else {
         document.getElementById("state_order_end").innerHTML='None'
     };
+    // Call data and print to the chart
     document.getElementById("state_cases").innerHTML=state_heatmap[index].total_cases;
     document.getElementById("state_deaths").innerHTML=state_heatmap[index].total_deaths;
     document.getElementById("state_thisweek").innerHTML=state_heatmap[index].thisweek_cases;
@@ -144,9 +164,11 @@ function stateChart(stateName) {
 
 // percentile funciton
 function get_percentile($percentile, $array) {
+    // Sort the array
     $array.sort(function (a, b) { return a - b; });
-  
+    // Find the percentile Threshold 
       $index = ($percentile/100) * $array.length;
+    // If you need to average then average, if not dont
       if (Math.floor($index) == $index) {
            $result = ($array[$index-1] + $array[$index])/2;
       }
@@ -159,17 +181,20 @@ function get_percentile($percentile, $array) {
 // Define which value the heatmap is based on
 function getRadioVal(form, name) {
     var val;
-    // get list of radio buttons with specified name
+    // get list of radio bubbles
     var radios = form.elements[name];
     
-    // loop through list of radio buttons
+    // loop through list of selections
     for (var i=0, len=radios.length; i<len; i++) {
-        if ( radios[i].checked ) { // radio checked?
-            val = radios[i].value; // if so, hold its value in val
-            break; // and break out of for loop
+        // Check if the bubble is checked
+        if ( radios[i].checked ) { 
+            // Set value and break if true
+            val = radios[i].value;
+            break;
         }
     }
-    return val; // return value of checked radio or undefined if none checked
+    // Return the value
+    return val;
 };
 
 // Reference Data
@@ -188,15 +213,17 @@ xhReq.open("GET", countylink, false);
 xhReq.send(null);
 var countyborders = JSON.parse(xhReq.responseText);
 
-// USA data
+// Fill in the chart for the USA data
 document.getElementById("usa_cases").innerHTML=usa_heatmap[0].total_cases
 document.getElementById("usa_deaths").innerHTML=usa_heatmap[0].total_deaths
 document.getElementById("usa_thisweek").innerHTML=usa_heatmap[0].thisweek_cases
 document.getElementById("usa_lastweek").innerHTML=usa_heatmap[0].lastweek_cases
 document.getElementById("usa_posrate").innerHTML=usa_heatmap[0].positive_rate.toFixed(2)+('%')
 
+// Set event listener to view the radio bubbles
 const selectElement = document.querySelector('#valuetype');
 selectElement.addEventListener('change', (event) => {
+    //  If the radio bubbles are changed, remove the old map, and add a new updated map
     myMap.off();
     myMap.remove();
     var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
@@ -205,20 +232,22 @@ selectElement.addEventListener('change', (event) => {
     passive: true
 });
 
-
+// Function to add a map
 function maps(valuetype) {
-
+    // Erase the container if it is filled
     var container = L.DomUtil.get('map');
     if(container != null){
         container._leaflet_id = null;
     };
 
+    // Add map functionality
     var myMap = L.map("map", {
         center: [45.8283, -108.5795],
         zoom: 3,
         dragging: true
     });
 
+    //  Add Background map 
     L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
@@ -230,24 +259,27 @@ function maps(valuetype) {
         }
     ).addTo(myMap);
 
-    // Calculate quartiles State
+    // Calculate the quartiles for the State values
     var values=[];
     for (var state in state_heatmap) {
         values=values.concat([state_heatmap[state][valuetype]]);
     };
+    // Find the bounds for green, yellow and red. Current set to 10th percentile for g, 50th for y and 90th for r
     statelow=get_percentile(10,values);
     statemid=get_percentile(50,values);
     stateup=get_percentile(90,values);
 
+    // Calculate the quartiles for the County values
     var valuescounty=[];
     for (var county in county_heatmap) {
         valuescounty=valuescounty.concat([county_heatmap[county][valuetype]]);
     };
+    // Find the bounds for green, yellow and red. Current set to 10th percentile for g, 50th for y and 90th for r
     countylow=get_percentile(10,valuescounty);
     countymid=get_percentile(50,valuescounty);
     countyup=get_percentile(90,valuescounty);
     
-    // County Map
+    // Add County Map
     var countymap = L.geoJson(countyborders, {
         style: function (feature) {
             return {
@@ -278,7 +310,7 @@ function maps(valuetype) {
         },
     });
 
-    // State Map
+    // Add State Map
     var statemap = L.geoJson(stateborders, {
         style: function (feature) {
             return {
@@ -292,6 +324,7 @@ function maps(valuetype) {
             layer.on({
                 click: function (event) {
                     myMap.fitBounds(event.target.getBounds());
+                    // Fill start Chart when clicked
                     stateChart(feature.properties.NAME)
                 },
                 mouseover: function (event) {
@@ -326,7 +359,8 @@ function maps(valuetype) {
         },
     });
 
-    // Zoom control to trasition between map
+    // Zoom threshold is set to 5
+    // on zoom in add county and state outlines, remove state
     myMap.on('zoomend', function () {
         if (myMap.getZoom() >= 5) {
             myMap.removeLayer(statemap);
@@ -335,6 +369,7 @@ function maps(valuetype) {
         }
     });
 
+    // on zoom out add state, remove state outlines and county
     myMap.on('zoomend', function () {
         if (myMap.getZoom() < 5) {
             myMap.removeLayer(countymap);
@@ -343,11 +378,13 @@ function maps(valuetype) {
         }
     });
 
+    // Add state map and return the map value itself
     statemap.addTo(myMap);
     return myMap;
 }
 
-
+//  Initialize by pulling the radio button value and adding the map
 var valuetype = getRadioVal(document.getElementById('valuetype'), 'optionsRadios' );
 myMap=maps(valuetype);
+// Initialize chart to NC
 stateChart('North Carolina');
