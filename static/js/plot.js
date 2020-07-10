@@ -6,21 +6,26 @@ function init() {
   for (var state in orders) {
     dropdown.append("option").text(orders[state].state);
   }
-  var stateName = d3.select("#States").property('value');
-  countySelect(stateName);
+  // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var totalsState = d3.select("#TotalS").property('value');
   var resultState = d3.select("#ResultS").property('value');
   StateGraph(stateName,totalsState,resultState)
+  // Change county dropdown based on state selected
+  countySelect(stateName);
+  // Pull the county name and option and feed to the graph
   var countyName = d3.select("#Counties").property('value');
   var totalsCounty = d3.select("#TotalC").property('value');
   var resultCounty = d3.select("#ResultC").property('value');
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 };
 
+// Change county dropdown based on selected state
 function countySelect(stateName) {
+  // Erase the current county names
   var dropdown = d3.select("#Counties");
   dropdown.html("");
+  // Filter by the state name and append the dropdown menu
   for (var county in county_cases) {
     if ((county_cases[county].State.toUpperCase()) == stateName.toUpperCase()) {
       dropdown.append("option").text(county_cases[county].County);
@@ -28,19 +33,25 @@ function countySelect(stateName) {
   }
 };
 
+// Event listener for the state name
 d3.select('#States').on('change', function() {
+  // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var totalsState = d3.select("#TotalS").property('value');
   var resultState = d3.select("#ResultS").property('value');
   StateGraph(stateName,totalsState,resultState)
+  // Change county dropdown based on state selected
   countySelect(stateName);
+  // Pull the county name and option and feed to the graph
   var countyName = d3.select("#Counties").property('value');
   var totalsCounty = d3.select("#TotalC").property('value');
   var resultCounty = d3.select("#ResultC").property('value');
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 });
 
+// Event listener for the county name
 d3.select('#Counties').on('change', function() {
+  // Pull the county name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var countyName = d3.select("#Counties").property('value');
   var totalsCounty = d3.select("#TotalC").property('value');
@@ -48,14 +59,18 @@ d3.select('#Counties').on('change', function() {
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 });
 
+// Event listener for the state option
 d3.select('#TotalS').on('change', function() {
+  // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var totalsState = d3.select("#TotalS").property('value');
   var resultState = d3.select("#ResultS").property('value');
   StateGraph(stateName,totalsState,resultState)
 });
 
+// Event listener for the county option
 d3.select('#TotalC').on('change', function() {
+  // Pull the county name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var countyName = d3.select("#Counties").property('value');
   var totalsCounty = d3.select("#TotalC").property('value');
@@ -63,14 +78,18 @@ d3.select('#TotalC').on('change', function() {
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 });
 
+// Event listener for the state value
 d3.select('#ResultS').on('change', function() {
+  // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var totalsState = d3.select("#TotalS").property('value');
   var resultState = d3.select("#ResultS").property('value');
   StateGraph(stateName,totalsState,resultState)
 });
 
+// Event listener for the county value
 d3.select('#ResultC').on('change', function() {
+  // Pull the county name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var countyName = d3.select("#Counties").property('value');
   var totalsCounty = d3.select("#TotalC").property('value');
@@ -78,8 +97,9 @@ d3.select('#ResultC').on('change', function() {
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 });
 
-
+// Add state plot
 function StateGraph(stateName,type,variable) {
+  // Select dataframe based on options selected
   if ((type) == 'Total') {
     if ((variable) == 'Cases') {
       var df=state_cases;
@@ -101,12 +121,14 @@ function StateGraph(stateName,type,variable) {
     }
   }
   
+  // Pull data from dataframe based on state selected
   for (var state in df) {
     if ((df[state].State.toUpperCase()) == stateName.toUpperCase()) {
         index = state;
     }
   }
 
+  // Pull the date and values from the data and format
   data=JSON.parse(JSON.stringify(df[index]));
   delete data["State"];
   dates=Object.keys(data);
@@ -115,6 +137,7 @@ function StateGraph(stateName,type,variable) {
     values.push(data[dates[date]]);
   }
 
+  // Pull the date from the order df and format
   orderData=JSON.parse(JSON.stringify(orders[index]));
   stateOrders=Object.keys(orderData);
   var orderDates=[];
@@ -122,12 +145,14 @@ function StateGraph(stateName,type,variable) {
     orderDates.push(orderData[stateOrders[orderDate]]);
   };
   
+  // format the orders into us short date form
   var orderImplementationtest= (new Date(orderDates[1])).toLocaleDateString('en-US');
   var orderExpirationtest= (new Date(orderDates[2])).toLocaleDateString('en-US');
 
-
+  // Set the order dates as a global variable to be used in the county graph as well
   window.orderImplementation = undefined;
   window.orderExpiration = undefined;
+  // find the index value for the order dates
   for (var date in dates) {
     today=(new Date(dates[date])).toLocaleDateString('en-US');
     if (today == orderImplementationtest) {
@@ -139,9 +164,11 @@ function StateGraph(stateName,type,variable) {
     }
   }
 
+  //  Romove old plots and reset
   $('#Splot').remove();
   $('#Sgraph-container').html('<canvas id="Splot"></canvas>');
 
+  // Configure drawing the vertical lines on the graphs and adding the data
   var myLineExtend = Chart.controllers.line.prototype.draw;
   var ctx = document.getElementById("Splot").getContext("2d");
   var config = {
@@ -175,6 +202,7 @@ function StateGraph(stateName,type,variable) {
     }
   };
 
+  // Draw the vertical lines
   Chart.helpers.extend(Chart.controllers.line.prototype, {
     draw: function () {
     
@@ -188,6 +216,7 @@ function StateGraph(stateName,type,variable) {
       var xaxis = chart.scales['x-axis-0'];
       var yaxis = chart.scales['y-axis-0'];
 
+      // Begin date line
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(xaxis.getPixelForValue(undefined, index1), yaxis.top + 24);
@@ -197,6 +226,7 @@ function StateGraph(stateName,type,variable) {
       ctx.stroke();
       ctx.restore();
 
+      // End date line
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(xaxis.getPixelForValue(undefined, index2), yaxis.top + 24);
@@ -215,10 +245,13 @@ function StateGraph(stateName,type,variable) {
     }
   });
 
+  // Add graph
   new Chart(ctx, config);
 };
 
+// Add county plot
 function CountyGraph(stateName,countyName,type,variable) {
+  // Select dataframe based on options selected
   if ((type) == 'Total') {
     if ((variable) == 'Cases') {
       var df=county_cases;
@@ -240,12 +273,14 @@ function CountyGraph(stateName,countyName,type,variable) {
     }
   }
 
+  // Pull data from dataframe based on county selected
   for (var county in df) {
     if ((df[county].State.toUpperCase()) == stateName.toUpperCase() && (df[county].County.toUpperCase()) == countyName.toUpperCase()){
         index = county;
     }
   }
 
+    // Pull the date and values from the data and format
   data=JSON.parse(JSON.stringify(df[index]));
   delete data["State"];
   delete data["County"];
@@ -256,9 +291,11 @@ function CountyGraph(stateName,countyName,type,variable) {
     values.push(data[dates[date]]);
   }
 
+  //  Romove old plots and reset
   $('#Cplot').remove();
   $('#Cgraph-container').html('<canvas id="Cplot"></canvas>');
 
+  // Configure drawing the vertical lines on the graphs and adding the data
   var myLineExtend = Chart.controllers.line.prototype.draw;
   var ctx = document.getElementById("Cplot").getContext("2d");
   var config = {
@@ -291,9 +328,10 @@ function CountyGraph(stateName,countyName,type,variable) {
       }
     }
   };
-
+  
+  // Add graph
   new Chart(ctx, config);
 };
 
-
+// Initialize
 init();
