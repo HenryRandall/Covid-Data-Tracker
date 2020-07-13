@@ -97,30 +97,24 @@ d3.select('#ResultC').on('change', function() {
   CountyGraph(stateName,countyName,totalsCounty,resultCounty)
 });
 
+// Function find average
+function average(nums) {
+  return nums.reduce((a, b) => (a + b)) / nums.length;
+}
+
 // Add state plot
 function StateGraph(stateName,type,variable) {
   // Select dataframe based on options selected
-  if ((type) == 'Total') {
     if ((variable) == 'Cases') {
-      var df=state_cases;
-      var label = 'Total Cases';
-    }
-    else {
-      var df=state_deaths;
-      var label = 'Total Deaths';
-    }
+    var df=state_cases;
   }
   else {
-    if ((variable) == 'Cases') {
-      var df=state_cases_daily;
-      var label = 'Reported Cases';
-    }
-    else {
-      var df=state_deaths_daily;
-      var label = 'Reported Deaths';
-    }
+    var df=state_deaths;
   }
   
+  // Label
+  var label= type+' '+variable;
+
   // Pull data from dataframe based on state selected
   for (var state in df) {
     if ((df[state].State.toUpperCase()) == stateName.toUpperCase()) {
@@ -137,6 +131,31 @@ function StateGraph(stateName,type,variable) {
     values.push(data[dates[date]]);
   }
 
+  // Format values
+  // For Daily Totals
+  if ((type) == 'Daily') {
+    var last=0;
+    for (var value in values) {
+      current=values[value]-last;
+      last=values[value];
+      values[value]=current;
+    }
+  }
+  //  7 Day Average
+  if ((type) == '7 Day Average') {
+    var last=0;
+    for (var value in values) {
+      current=values[value]-last;
+      last=values[value];
+      values[value]=current;
+    }
+    for (var value in values) {
+      values[value]=Math.round(average(values.slice(value,Number(value)+7)));
+    }
+    values=values.slice(0,-6);
+    dates=dates.slice(6);
+  }
+
   // Pull the date from the order df and format
   orderData=JSON.parse(JSON.stringify(orders[index]));
   stateOrders=Object.keys(orderData);
@@ -145,21 +164,22 @@ function StateGraph(stateName,type,variable) {
     orderDates.push(orderData[stateOrders[orderDate]]);
   };
   
-  // format the orders into us short date form
-  var orderImplementationtest= (new Date(orderDates[1])).toLocaleDateString('en-US');
-  var orderExpirationtest= (new Date(orderDates[2])).toLocaleDateString('en-US');
-
   // Set the order dates as a global variable to be used in the county graph as well
-  window.orderImplementation = undefined;
-  window.orderExpiration = undefined;
+  window.orderImplementation= (new Date(orderDates[1])).toLocaleDateString('en-US');
+  window.orderExpiration= (new Date(orderDates[2])).toLocaleDateString('en-US');
+
+  // Set indexes null in case that there isnt one
+  index1 = undefined;
+  index2 = undefined;
+
   // find the index value for the order dates
   for (var date in dates) {
     today=(new Date(dates[date])).toLocaleDateString('en-US');
-    if (today == orderImplementationtest) {
-      window.orderImplementation = date;
+    if (today == orderImplementation) {
+      index1 = Number(date)+1;
     }
-    if (today == orderExpirationtest) {
-      window.orderExpiration = date;
+    if (today == orderExpiration) {
+      index2 = Number(date)+1;
       break;
     }
   }
@@ -185,8 +205,8 @@ function StateGraph(stateName,type,variable) {
         data: values
       }],
       datasetFill: false,
-      lineAtIndex1: orderImplementation,
-      lineAtIndex2: orderExpiration
+      lineAtIndex1: index1,
+      lineAtIndex2: index2
     },
     options: {
       scales: {
@@ -252,26 +272,15 @@ function StateGraph(stateName,type,variable) {
 // Add county plot
 function CountyGraph(stateName,countyName,type,variable) {
   // Select dataframe based on options selected
-  if ((type) == 'Total') {
-    if ((variable) == 'Cases') {
-      var df=county_cases;
-      var label = 'Total Cases';
-    }
-    else {
-      var df=county_deaths;
-      var label = 'Total Deaths';
-    }
+  if ((variable) == 'Cases') {
+    var df=county_cases;
   }
   else {
-    if ((variable) == 'Cases') {
-      var df=county_cases_daily;
-      var label = 'Reported Cases';
-    }
-    else {
-      var df=county_deaths_daily;
-      var label = 'Reported Deaths';
-    }
+    var df=county_deaths;
   }
+  
+  // Label
+  var label= type+' '+variable;
 
   // Pull data from dataframe based on county selected
   for (var county in df) {
@@ -280,7 +289,7 @@ function CountyGraph(stateName,countyName,type,variable) {
     }
   }
 
-    // Pull the date and values from the data and format
+  // Pull the date and values from the data and format
   data=JSON.parse(JSON.stringify(df[index]));
   delete data["State"];
   delete data["County"];
@@ -289,6 +298,47 @@ function CountyGraph(stateName,countyName,type,variable) {
   var values=[];
   for (var date in dates) {
     values.push(data[dates[date]]);
+  }
+
+  // Format values
+  // For Daily Totals
+  if ((type) == 'Daily') {
+    var last=0;
+    for (var value in values) {
+      current=values[value]-last;
+      last=values[value];
+      values[value]=current;
+    }
+  }
+  //  7 Day Average
+  if ((type) == '7 Day Average') {
+    var last=0;
+    for (var value in values) {
+      current=values[value]-last;
+      last=values[value];
+      values[value]=current;
+    }
+    for (var value in values) {
+      values[value]=Math.round(average(values.slice(value,Number(value)+7)));
+    }
+    values=values.slice(0,-6);
+    dates=dates.slice(6);
+  }
+
+  // Set indexes null in case that there isnt one
+  index1 = undefined;
+  index2 = undefined;
+
+  // find the index value for the order dates
+  for (var date in dates) {
+    today=(new Date(dates[date])).toLocaleDateString('en-US');
+    if (today == orderImplementation) {
+      index1 = Number(date)+1;
+    }
+    if (today == orderExpiration) {
+      index2 = Number(date)+1;
+      break;
+    }
   }
 
   //  Romove old plots and reset
@@ -312,8 +362,8 @@ function CountyGraph(stateName,countyName,type,variable) {
         data: values
       }],
       datasetFill: false,
-      lineAtIndex1: orderImplementation,
-      lineAtIndex2: orderExpiration
+      lineAtIndex1: index1,
+      lineAtIndex2: index2
     },
     options: {
       scales: {

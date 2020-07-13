@@ -7,19 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>COVID State and Local Plots</title>
-  
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
-
   <!-- d3 JavaScript -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
-
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="static\style\style.css">
-
   <!-- Bootswatch CSS -->
   <link rel="stylesheet" type="text/css" href="static\style\lux.min.css">
-
   <link rel="shortcut icon" href="#" />
 </head>
 
@@ -35,10 +30,15 @@
         <li class="nav-item">
           <a class="nav-link" href="/plots">Plots</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/methodology">Methodology</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/aboutus">About Us</a>
+        </li>
       </ul>
     </div>
   </nav>
-
   <!-- Main page container -->
   <div class="container">
     <!-- State Plot selectors -->
@@ -51,8 +51,9 @@
       <select id="States"></select>
       <label for="Total or Daily">  Total or Daily: </label>
       <select id="TotalS" >
-        <option value="Daily">Daily</option>
         <option value="Total">Total</option>
+        <option value="Daily">Daily</option>
+        <option value="7 Day Average">7 Day Average</option>
       </select>
       <label for=" Cases or Deaths">  Cases or Deaths: </label>
       <select id="ResultS" >
@@ -71,7 +72,6 @@
         </div>
       </div>
     </div>     
-
     <!-- County Plot selectors -->
     <div class="row">
       <h1>County Plots</h1>
@@ -82,8 +82,9 @@
       <select id="Counties"></select>
       <label for="Total or Daily">  Total or Daily: </label>
       <select id="TotalC" >
-        <option value="Daily">Daily</option>
         <option value="Total">Total</option>
+        <option value="Daily">Daily</option>
+        <option value="7 Day Average">7 Day Average</option>
       </select>
       <label for="Cases or Deaths">  Cases or Deaths: </label>
       <select id="ResultC" >
@@ -111,8 +112,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js" integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q==" crossorigin=""></script>
   <!-- D3 JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <!-- Parse JSONs improted in the flask app -->
@@ -120,12 +119,8 @@
     var orders = JSON.parse('{{ orders | safe}}');
     var state_cases = JSON.parse('{{ state_cases | safe}}');
     var state_deaths = JSON.parse('{{ state_deaths | safe}}');
-    var state_cases_daily = JSON.parse('{{ state_cases_daily | safe}}');
-    var state_deaths_daily = JSON.parse('{{ state_deaths_daily | safe}}');
     var county_cases = JSON.parse('{{ county_cases | safe}}');
     var county_deaths = JSON.parse('{{ county_deaths | safe}}');
-    var county_cases_daily = JSON.parse('{{ county_cases_daily | safe}}');
-    var county_deaths_daily = JSON.parse('{{ county_deaths_daily | safe}}');
   </script>
   <!-- Run our script -->
   <script src="./static/js/plot.js"></script>
