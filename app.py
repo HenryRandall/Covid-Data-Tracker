@@ -79,7 +79,7 @@ else:
 
 # create route that renders index.html template
 @app.route("/")
-# @cache.cached(timeout=3600)
+@cache.cached(timeout=3600)
 def home():
     # Pull data from SQL datadase and turn it into JSON
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
