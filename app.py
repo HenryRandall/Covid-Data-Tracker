@@ -74,31 +74,28 @@ else:
                     'retry_timeout': 2,
                     'dead_timeout': 30}}})
 
+# Pull data from SQL datadase and turn it into JSON
+state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
+state_heatmap=state_heatmap.to_json(orient='records')
+cache.set('state_heatmap',state_heatmap)
+usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
+usa_heatmap=usa_heatmap.to_json(orient='records')
+cache.set('usa_heatma',usa_heatma)
+county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
+county_heatmap=county_heatmap.to_json(orient='records')
+# Fix Parsing error where python and javascript look at apostrophes in different ways
+county_heatmap=county_heatmap.replace("'",r"\'")
+cache.set('county_heatmap',county_heatmap)
 
 # create route that renders index.html template
 @app.route("/")
-@cache.cached()
 def home():
-    # Pull data from SQL datadase and turn it into JSON
-    
-    state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
-    state_heatmap=state_heatmap.to_json(orient='records')
-    cache.set('state_heatmap',state_heatmap)
 
-    usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
-    usa_heatmap=usa_heatmap.to_json(orient='records')
-    cache.set('usa_heatma',usa_heatma)
 
-    county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
-    county_heatmap=county_heatmap.to_json(orient='records')
-    # Fix Parsing error where python and javascript look at apostrophes in different ways
-    county_heatmap=county_heatmap.replace("'",r"\'")
-    cache.set('county_heatmap',county_heatmap)
-    
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
-@cache.cached()
+# @cache.cached()
 def plots():
     # Pull data from SQL datadase and turn it into JSON
     orders=pd.read_sql_query('select * from orders', con=engine1)
