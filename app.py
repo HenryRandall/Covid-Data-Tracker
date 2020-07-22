@@ -38,8 +38,6 @@ engine1 = create_engine(f'postgresql://{connection1}')
 # connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
 # engine2 = create_engine(f'postgresql://{connection2}')
 
-
-
 ################################################
 # Caching
 ################################################
@@ -82,14 +80,13 @@ def home():
         state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
-        state_heatmap=''
+        print('cached')
 
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
         usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
-        usa_heatmap=''
 
     county_heatmap=cache.get('county_heatmap')
     if county_heatmap==None:
@@ -98,7 +95,6 @@ def home():
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_heatmap=county_heatmap.replace("'",r"\'")
         cache.set('county_heatmap',county_heatmap, timeout=5 * 60)
-        county_heatmap=''
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
