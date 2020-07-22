@@ -76,7 +76,7 @@ else:
 
 
 # create route that renders index.html template
-@app.route("/", methods=('GET','POST'))
+@app.route("/")
 def home():
     # Pull data from SQL datadase and turn it into JSON
 
@@ -102,7 +102,7 @@ def home():
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
-@app.route("/plots", methods=('GET','POST'))
+@app.route("/plots")
 def plots():
     # Pull data from SQL datadase and turn it into JSON
     orders=cache.get('orders')
@@ -129,7 +129,7 @@ def plots():
         county_cases=county_cases.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases=county_cases.replace("'",r"\'")
-        # cache.set('county_cases',county_cases, timeout=60 * 60)
+        # cache.set('county_cases',county_cases, timeout=5 * 60)
 
     county_deaths=cache.get('county_deaths')
     if county_deaths==None:
@@ -150,4 +150,4 @@ def aboutus():
     return render_template("aboutus.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
