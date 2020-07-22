@@ -73,6 +73,7 @@ else:
 
 # create route that renders index.html template
 @app.route("/", methods=('GET','POST'))
+@cache.cached()
 def home():
     # Pull data from SQL datadase and turn it into JSON
     state_heatmap=cache.get('state_heatmap')
