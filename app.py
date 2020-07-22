@@ -76,7 +76,7 @@ else:
 
 
 # create route that renders index.html template
-@app.route("/", methods=('GET', 'POST'))
+@app.route("/", methods=('POST'))
 def home():
     # Pull data from SQL datadase and turn it into JSON
     
