@@ -82,17 +82,17 @@ def home():
     
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
     state_heatmap=state_heatmap.to_json(orient='records')
-    cache.set('state_heatmap',state_heatmap)
+    cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
 
     usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
     usa_heatmap=usa_heatmap.to_json(orient='records')
-    cache.set('usa_heatmap',usa_heatmap)
+    cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
 
     county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
     county_heatmap=county_heatmap.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_heatmap=county_heatmap.replace("'",r"\'")
-    cache.set('county_heatmap',county_heatmap)
+    cache.set('county_heatmap',county_heatmap, timeout=5 * 60)
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
