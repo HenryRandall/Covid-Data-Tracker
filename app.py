@@ -44,9 +44,6 @@ engine1 = create_engine(f'postgresql://{connection1}')
 # Caching
 ################################################
 cache=Cache()
-# app.config['CACHE_TYPE']='memcached'
-# cache.init_app(app)
-
 cache_servers = os.environ.get('MEMCACHIER_SERVERS')
 if cache_servers == None:
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
@@ -92,7 +89,7 @@ def home():
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
 
-    county_heatmap=cache.get('counnty_heatmap')
+    county_heatmap=cache.get('county_heatmap')
     if county_heatmap==None:
         county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
         county_heatmap=county_heatmap.to_json(orient='records')
@@ -102,7 +99,7 @@ def home():
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
-@app.route("/plots")
+@app.route("/plots", methods=('GET','POST'))
 # @cache.cached()
 def plots():
     # Pull data from SQL datadase and turn it into JSON
