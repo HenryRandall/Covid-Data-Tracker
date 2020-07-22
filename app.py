@@ -60,7 +60,7 @@ else:
                 'CACHE_MEMCACHED_PASSWORD': cache_pass,
                 'CACHE_OPTIONS': { 'behaviors': {
                     # Faster IO
-                    'tcp_nodelay': True,
+                    'tcp_nodelay': False,
                     # Keep connection alive
                     'tcp_keepalive': True,
                     # Timeout for set/get requests
