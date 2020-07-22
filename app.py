@@ -129,7 +129,7 @@ def plots():
         county_cases=county_cases.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases=county_cases.replace("'",r"\'")
-        cache.set('county_cases',county_cases, timeout=60 * 60)
+        # cache.set('county_cases',county_cases, timeout=60 * 60)
 
     county_deaths=cache.get('county_deaths')
     if county_deaths==None:
