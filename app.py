@@ -60,14 +60,14 @@ else:
                 'CACHE_MEMCACHED_PASSWORD': cache_pass,
                 'CACHE_OPTIONS': { 'behaviors': {
                     # Faster IO
-                    'tcp_nodelay': False,
+                    'tcp_nodelay': True,
                     # Keep connection alive
                     'tcp_keepalive': True,
                     # Timeout for set/get requests
-                    # 'connect_timeout': 2000, # ms
-                    # 'send_timeout': 750 * 1000, # us
-                    # 'receive_timeout': 750 * 1000, # us
-                    # '_poll_timeout': 2000, # ms
+                    'connect_timeout': 2000, # ms
+                    'send_timeout': 750 * 1000, # us
+                    'receive_timeout': 750 * 1000, # us
+                    '_poll_timeout': 2000, # ms
                     # Better failover
                     'ketama': True,
                     'remove_failed': 1,
@@ -75,21 +75,26 @@ else:
                     'dead_timeout': 30}}})
 
 
-
-
 # create route that renders index.html template
 @app.route("/")
 @cache.cached()
 def home():
     # Pull data from SQL datadase and turn it into JSON
+    
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
     state_heatmap=state_heatmap.to_json(orient='records')
+    cache.set('state_heatmap',state_heatmap)
+
     usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
     usa_heatmap=usa_heatmap.to_json(orient='records')
+    cache.set('usa_heatma',usa_heatma)
+
     county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
     county_heatmap=county_heatmap.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_heatmap=county_heatmap.replace("'",r"\'")
+    cache.set('county_heatmap',county_heatmap)
+    
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
