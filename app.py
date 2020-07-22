@@ -86,13 +86,13 @@ def home():
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
 
-    usa_heatmap=cache.get('state_heatmap')
+    usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
         usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
 
-    county_heatmap=cache.get('state_heatmap')
+    county_heatmap=cache.get('counnty_heatmap')
     if county_heatmap==None:
         county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
         county_heatmap=county_heatmap.to_json(orient='records')
