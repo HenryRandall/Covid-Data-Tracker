@@ -12,6 +12,10 @@ import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
 import json
+
+import logging
+
+
 #################################################
 # Flask Setup
 #################################################
@@ -73,8 +77,8 @@ else:
 
 # create route that renders index.html template
 @app.route("/", methods=('GET','POST'))
-@cache.cached()
 def home():
+    app.logger.debug('this is a DEBUG message')
     # Pull data from SQL datadase and turn it into JSON
     state_heatmap=cache.get('state_heatmap')
     if state_heatmap==None:
@@ -100,7 +104,6 @@ def home():
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots", methods=('GET','POST'))
-# @cache.cached()
 def plots():
     # Pull data from SQL datadase and turn it into JSON
     orders=cache.get('orders')
@@ -148,4 +151,4 @@ def aboutus():
     return render_template("aboutus.html")
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
