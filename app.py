@@ -78,14 +78,13 @@ else:
 # create route that renders index.html template
 @app.route("/", methods=('GET','POST'))
 def home():
-    app.logger.debug('this is a DEBUG message')
     # Pull data from SQL datadase and turn it into JSON
+
     state_heatmap=cache.get('state_heatmap')
     if state_heatmap==None:
         state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
-        print('cached')
 
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
@@ -130,7 +129,7 @@ def plots():
         county_cases=county_cases.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases=county_cases.replace("'",r"\'")
-        cache.set('county_cases',county_cases, timeout=5 * 60)
+        cache.set('county_cases',county_cases, timeout=60 * 60)
 
     county_deaths=cache.get('county_deaths')
     if county_deaths==None:
@@ -138,7 +137,7 @@ def plots():
         county_deaths=county_deaths.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths=county_deaths.replace("'",r"\'")
-        cache.set('county_deaths',county_deaths, timeout=5 * 60)
+        cache.set('county_deaths',county_deaths, timeout=60 * 60)
 
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
