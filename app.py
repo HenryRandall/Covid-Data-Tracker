@@ -82,6 +82,7 @@ def home():
         state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
+        print('cached')
 
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
@@ -103,20 +104,31 @@ def home():
 # @cache.cached()
 def plots():
     # Pull data from SQL datadase and turn it into JSON
+
     orders=pd.read_sql_query('select * from orders', con=engine1)
     orders=orders.to_json(orient='records')
+
+
     state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
     state_cases=state_cases.to_json(orient='records')
+
+
     state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
     state_deaths=state_deaths.to_json(orient='records')
+
+
     county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
     county_cases=county_cases.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
+
+
     county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
     county_deaths=county_deaths.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
+
+
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
 @app.route("/methodology")
