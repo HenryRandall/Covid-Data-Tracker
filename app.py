@@ -6,11 +6,15 @@ from flask import (
     jsonify,
     request,
     redirect)
+from flask_caching import Cache
 import sqlalchemy
 import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
 import json
+
+
+
 #################################################
 # Flask Setup
 #################################################
@@ -37,8 +41,18 @@ engine1 = create_engine(f'postgresql://{connection1}')
 # connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
 # engine2 = create_engine(f'postgresql://{connection2}')
 
+#################################################
+# Caching
+#################################################
+cache=Cache()
+app.config['CACHE_TYPE']='memcached'
+cache.init_app(app)
+
+
+
 # create route that renders index.html template
 @app.route("/")
+@cache.cached(timeout=3600)
 def home():
     # Pull data from SQL datadase and turn it into JSON
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
@@ -79,5 +93,4 @@ def aboutus():
     return render_template("aboutus.html")
 
 if __name__ == "__main__":
-    app.jinja_env.cache = {}
     app.run(debug=False)
