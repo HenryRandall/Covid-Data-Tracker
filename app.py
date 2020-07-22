@@ -161,9 +161,6 @@ def create_app():
         app.run(debug=False)
 
 
-  return app
-
-
-
+    return app
 
 
