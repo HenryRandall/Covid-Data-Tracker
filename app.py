@@ -12,10 +12,6 @@ import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
 import json
-
-import logging
-
-
 #################################################
 # Flask Setup
 #################################################
@@ -41,7 +37,6 @@ connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
 # connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
 # engine2 = create_engine(f'postgresql://{connection2}')
-
 ################################################
 # Caching
 ################################################
@@ -73,9 +68,9 @@ else:
                     'retry_timeout': 2,
                     'dead_timeout': 30}}
                     })
-
-
+##############################################################
 # Pull data from SQL datadase and turn it into JSON and cache
+##############################################################
 state_heatmap=cache.get('state_heatmap')
 if state_heatmap==None:
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
@@ -96,9 +91,6 @@ if county_heatmap==None:
     county_heatmap=county_heatmap.replace("'",r"\'")
     cache.set('county_heatmap',county_heatmap, timeout=5 * 60)
 
-
-    
-# Pull data from SQL datadase and turn it into JSON and cache
 orders=cache.get('orders')
 if orders==None:
     orders=pd.read_sql_query('select * from orders', con=engine1)
@@ -121,32 +113,27 @@ county_cases=cache.get('county_cases')
 if county_cases==None:
     county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
     county_cases=county_cases.to_json(orient='records')
+    cache.set('county_cases',county_cases, timeout=5 * 60)
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
-    cache.set('county_cases',county_cases, timeout=5 * 60)
+
 
 county_deaths=cache.get('county_deaths')
 if county_deaths==None:
     county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
     county_deaths=county_deaths.to_json(orient='records')
+    cache.set('county_deaths',county_deaths, timeout=5 * 60)
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
-    cache.set('county_deaths',county_deaths, timeout=5 * 60)
 
-# create route that renders index.html template
+
+# create route that renders html templates
 @app.route("/")
 def home():
-    # Pull data from SQL datadase and turn it into JSON and cache
-
-
-
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
 def plots():
-    # Pull data from SQL datadase and turn it into JSON and cache
-
-
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
 @app.route("/methodology")
