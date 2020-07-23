@@ -116,7 +116,7 @@ if compressed_county_cases==None:
     county_cases=county_cases.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
-    compressed_county_cases=zlib.compress(county_cases.encode('utf8'), level=9))
+    compressed_county_cases=zlib.compress(county_cases.encode('utf8'), level=9)
     cache.set('compressed_county_cases',compressed_county_cases, timeout=0)
 else:
     county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
