@@ -111,16 +111,16 @@ if state_deaths==None:
 
 county_cases=cache.get('county_cases')
 if county_cases==None:
-    county_cases=pd.read_sql_query('select top 5 * from county_cases', con=engine1)
-    county_cases=county_cases.to_json(orient='records')
+    county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
+    county_cases=county_cases.to_json(orient='records').head()
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
     cache.set('county_cases',county_cases, timeout=5 * 60)
 
 county_deaths=cache.get('county_deaths')
 if county_deaths==None:
-    county_deaths=pd.read_sql_query('select top 5 * from county_deaths', con=engine1)
-    county_deaths=county_deaths.to_json(orient='records')
+    county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
+    county_deaths=county_deaths.to_json(orient='records').head()
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
     cache.set('county_deaths',county_deaths, timeout=5 * 60)
