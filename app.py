@@ -84,7 +84,7 @@ def home():
     if state_heatmap==None:
         state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
         state_heatmap=state_heatmap.to_json(orient='records')
-        cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
+        cache.set('state_heatmap',state_heatmap)
 
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
@@ -130,7 +130,7 @@ def plots():
         county_cases=county_cases.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases=county_cases.replace("'",r"\'")
-        cache.set('county_cases',county_cases, timeout=5 * 60)
+        cache.set('county_cases',county_cases)
 
     county_deaths=cache.get('county_deaths')
     if county_deaths==None:
