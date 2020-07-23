@@ -75,30 +75,70 @@ else:
                     })
 
 
+# Pull data from SQL datadase and turn it into JSON and cache
+state_heatmap=cache.get('state_heatmap')
+if state_heatmap==None:
+    state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
+    state_heatmap=state_heatmap.to_json(orient='records')
+    cache.set('state_heatmap',state_heatmap, timeout=5 * 60)
+
+usa_heatmap=cache.get('usa_heatmap')
+if usa_heatmap==None:
+    usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
+    usa_heatmap=usa_heatmap.to_json(orient='records')
+    cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
+
+county_heatmap=cache.get('county_heatmap')
+if county_heatmap==None:
+    county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
+    county_heatmap=county_heatmap.to_json(orient='records')
+    # Fix Parsing error where python and javascript look at apostrophes in different ways
+    county_heatmap=county_heatmap.replace("'",r"\'")
+    cache.set('county_heatmap',county_heatmap, timeout=5 * 60)
+
+
+    
+# Pull data from SQL datadase and turn it into JSON and cache
+orders=cache.get('orders')
+if orders==None:
+    orders=pd.read_sql_query('select * from orders', con=engine1)
+    orders=orders.to_json(orient='records')
+    cache.set('orders',orders, timeout=5 * 60)
+
+state_cases=cache.get('state_cases')
+if state_cases==None:
+    state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
+    state_cases=state_cases.to_json(orient='records')
+    cache.set('state_cases',state_cases, timeout=5 * 60)
+
+state_deaths=cache.get('state_deaths')
+if state_deaths==None:
+    state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
+    state_deaths=state_deaths.to_json(orient='records')
+    cache.set('state_deaths',state_deaths, timeout=5 * 60)
+
+county_cases=cache.get('county_cases')
+if county_cases==None:
+    county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
+    county_cases=county_cases.to_json(orient='records')
+    # Fix Parsing error where python and javascript look at apostrophes in different ways
+    county_cases=county_cases.replace("'",r"\'")
+    cache.set('county_cases',county_cases, timeout=5 * 60)
+
+county_deaths=cache.get('county_deaths')
+if county_deaths==None:
+    county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
+    county_deaths=county_deaths.to_json(orient='records')
+    # Fix Parsing error where python and javascript look at apostrophes in different ways
+    county_deaths=county_deaths.replace("'",r"\'")
+    cache.set('county_deaths',county_deaths, timeout=5 * 60)
+
 # create route that renders index.html template
 @app.route("/")
 def home():
     # Pull data from SQL datadase and turn it into JSON and cache
 
-    state_heatmap=cache.get('state_heatmap')
-    if state_heatmap==None:
-        state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
-        state_heatmap=state_heatmap.to_json(orient='records')
-        cache.set('state_heatmap',state_heatmap)
 
-    usa_heatmap=cache.get('usa_heatmap')
-    if usa_heatmap==None:
-        usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
-        usa_heatmap=usa_heatmap.to_json(orient='records')
-        cache.set('usa_heatmap',usa_heatmap, timeout=5 * 60)
-
-    county_heatmap=cache.get('county_heatmap')
-    if county_heatmap==None:
-        county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
-        county_heatmap=county_heatmap.to_json(orient='records')
-        # Fix Parsing error where python and javascript look at apostrophes in different ways
-        county_heatmap=county_heatmap.replace("'",r"\'")
-        cache.set('county_heatmap',county_heatmap, timeout=5 * 60)
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
@@ -106,39 +146,6 @@ def home():
 def plots():
     # Pull data from SQL datadase and turn it into JSON and cache
 
-    orders=cache.get('orders')
-    if orders==None:
-        orders=pd.read_sql_query('select * from orders', con=engine1)
-        orders=orders.to_json(orient='records')
-        cache.set('orders',orders, timeout=5 * 60)
-
-    state_cases=cache.get('state_cases')
-    if state_cases==None:
-        state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
-        state_cases=state_cases.to_json(orient='records')
-        cache.set('state_cases',state_cases, timeout=5 * 60)
-
-    state_deaths=cache.get('state_deaths')
-    if state_deaths==None:
-        state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
-        state_deaths=state_deaths.to_json(orient='records')
-        cache.set('state_deaths',state_deaths, timeout=5 * 60)
-
-    county_cases=cache.get('county_cases')
-    if county_cases==None:
-        county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
-        county_cases=county_cases.to_json(orient='records')
-        # Fix Parsing error where python and javascript look at apostrophes in different ways
-        county_cases=county_cases.replace("'",r"\'")
-        cache.set('county_cases',county_cases)
-
-    county_deaths=cache.get('county_deaths')
-    if county_deaths==None:
-        county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
-        county_deaths=county_deaths.to_json(orient='records')
-        # Fix Parsing error where python and javascript look at apostrophes in different ways
-        county_deaths=county_deaths.replace("'",r"\'")
-        cache.set('county_deaths',county_deaths, timeout=5 * 60)
 
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
