@@ -116,10 +116,10 @@ if compressed_county_cases==None:
     county_cases=county_cases.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
-    compressed_county_cases=zlib.compress(county_cases)
+    compressed_county_cases=zlib.compress(county_cases.encode('utf8'))
     cache.set('compressed_county_cases',compressed_county_cases, timeout=5 * 60)
 else:
-    county_cases=zlib.decompress(compressed_county_cases)
+    county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
 
 compressed_county_deaths=cache.get('compressed_county_deaths')
 if compressed_county_deaths==None:
@@ -127,10 +127,10 @@ if compressed_county_deaths==None:
     county_deaths=county_deaths.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
-    compressed_county_deaths=zlib.compress(county_deaths)
+    compressed_county_deaths=zlib.compress(county_deaths.encode('utf8'))
     cache.set('compressed_county_deaths',compressed_county_deaths, timeout=5 * 60)
 else:
-    county_deaths=zlib.decompress(compressed_county_deaths)
+    county_deaths=zlib.decompress(compressed_county_deaths).decode('utf8')
 
 # create route that renders html templates
 @app.route("/")
