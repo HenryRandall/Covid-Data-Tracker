@@ -53,6 +53,7 @@ else:
                 'CACHE_MEMCACHED_SERVERS': cache_servers.split(','),
                 'CACHE_MEMCACHED_USERNAME': cache_user,
                 'CACHE_MEMCACHED_PASSWORD': cache_pass,
+                'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
                 'CACHE_OPTIONS': { 'behaviors': {
                     # Faster IO
                     'tcp_nodelay': True,
