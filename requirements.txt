@@ -8,3 +8,4 @@ boto>=2.49.0
 psycopg2>=2.8.5
 Flask-Caching>=1.9.0
 pylibmc==1.5.2
+zlib

@@ -12,6 +12,7 @@ import sqlalchemy
 from sqlalchemy import create_engine, func, inspect, desc
 import pandas as pd
 import json
+import zlib
 #################################################
 # Flask Setup
 #################################################
@@ -109,21 +110,27 @@ if state_deaths==None:
     state_deaths=state_deaths.to_json(orient='records')
     cache.set('state_deaths',state_deaths, timeout=5 * 60)
 
-county_cases=cache.get('county_cases')
-if county_cases==None:
+compressed_county_cases=cache.get('compressed_county_cases')
+if compressed_county_cases==None:
     county_cases=pd.read_sql_query('select * from county_cases', con=engine1).head(2000)
     county_cases=county_cases.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
-    cache.set('county_cases',county_cases, timeout=5 * 60)
+    compressed_county_cases=zlib.compress(county_cases)
+    cache.set('compressed_county_cases',compressed_county_cases, timeout=5 * 60)
+else:
+    county_cases=zlib.decompress(compressed_county_cases)
 
-county_deaths=cache.get('county_deaths')
-if county_deaths==None:
+compressed_county_deaths=cache.get('compressed_county_deaths')
+if compressed_county_deaths==None:
     county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1).head(2000)
     county_deaths=county_deaths.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
-    cache.set('county_deaths',county_deaths, timeout=5 * 60)
+    compressed_county_deaths=zlib.compress(county_deaths)
+    cache.set('compressed_county_deaths',compressed_county_deaths, timeout=5 * 60)
+else:
+    county_deaths=zlib.decompress(compressed_county_deaths)
 
 # create route that renders html templates
 @app.route("/")
