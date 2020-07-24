@@ -77,13 +77,13 @@ state_heatmap=cache.get('state_heatmap')
 if state_heatmap==None:
     state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
     state_heatmap=state_heatmap.to_json(orient='records')
-    cache.set('state_heatmap',state_heatmap, timeout=0)
+    cache.set('state_heatmap',state_heatmap)
 
 usa_heatmap=cache.get('usa_heatmap')
 if usa_heatmap==None:
     usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
     usa_heatmap=usa_heatmap.to_json(orient='records')
-    cache.set('usa_heatmap',usa_heatmap, timeout=0)
+    cache.set('usa_heatmap',usa_heatmap)
 
 county_heatmap=cache.get('county_heatmap')
 if county_heatmap==None:
@@ -91,25 +91,25 @@ if county_heatmap==None:
     county_heatmap=county_heatmap.to_json(orient='records')
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_heatmap=county_heatmap.replace("'",r"\'")
-    cache.set('county_heatmap',county_heatmap, timeout=0)
+    cache.set('county_heatmap',county_heatmap)
 
 orders=cache.get('orders')
 if orders==None:
     orders=pd.read_sql_query('select * from orders', con=engine1)
     orders=orders.to_json(orient='records')
-    cache.set('orders',orders, timeout=0)
+    cache.set('orders',orders)
 
 state_cases=cache.get('state_cases')
 if state_cases==None:
     state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
     state_cases=state_cases.to_json(orient='records')
-    cache.set('state_cases',state_cases, timeout=0)
+    cache.set('state_cases',state_cases)
 
 state_deaths=cache.get('state_deaths')
 if state_deaths==None:
     state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
     state_deaths=state_deaths.to_json(orient='records')
-    cache.set('state_deaths',state_deaths, timeout=0)
+    cache.set('state_deaths',state_deaths)
 
 compressed_county_cases=cache.get('compressed_county_cases')
 if compressed_county_cases==None:
@@ -118,7 +118,7 @@ if compressed_county_cases==None:
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_cases=county_cases.replace("'",r"\'")
     compressed_county_cases=zlib.compress(county_cases.encode('utf8'), level=9)
-    cache.set('compressed_county_cases',compressed_county_cases, timeout=0)
+    cache.set('compressed_county_cases',compressed_county_cases)
 else:
     county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
 
@@ -129,7 +129,7 @@ if compressed_county_deaths==None:
     # Fix Parsing error where python and javascript look at apostrophes in different ways
     county_deaths=county_deaths.replace("'",r"\'")
     compressed_county_deaths=zlib.compress(county_deaths.encode('utf8'), level=9)
-    cache.set('compressed_county_deaths',compressed_county_deaths, timeout=0)
+    cache.set('compressed_county_deaths',compressed_county_deaths)
 else:
     county_deaths=zlib.decompress(compressed_county_deaths).decode('utf8')
 
