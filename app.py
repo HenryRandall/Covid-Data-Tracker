@@ -89,7 +89,7 @@ def home():
         usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap)
-        print('state_heatmap cached')
+        print('usa_heatmap cached')
 
     county_heatmap=cache.get('county_heatmap')
     if county_heatmap==None:
@@ -98,7 +98,7 @@ def home():
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_heatmap=county_heatmap.replace("'",r"\'")
         cache.set('county_heatmap',county_heatmap)
-        print('state_heatmap cached')
+        print('county_heatmap cached')
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
@@ -111,21 +111,21 @@ def plots():
         orders=pd.read_sql_query('select * from orders', con=engine1)
         orders=orders.to_json(orient='records')
         cache.set('orders',orders)
-        print('state_heatmap cached')
+        print('orders cached')
 
     state_cases=cache.get('state_cases')
     if state_cases==None:
         state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
         state_cases=state_cases.to_json(orient='records')
         cache.set('state_cases',state_cases)
-        print('state_heatmap cached')
+        print('state_cases cached')
 
     state_deaths=cache.get('state_deaths')
     if state_deaths==None:
         state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
         state_deaths=state_deaths.to_json(orient='records')
         cache.set('state_deaths',state_deaths)
-        print('state_heatmap cached')
+        print('state_deaths cached')
 
     compressed_county_cases=cache.get('compressed_county_cases')
     if compressed_county_cases==None:
@@ -135,7 +135,7 @@ def plots():
         county_cases=county_cases.replace("'",r"\'")
         compressed_county_cases=zlib.compress(county_cases.encode('utf8'), level=9)
         cache.set('compressed_county_cases',compressed_county_cases)
-        print('state_heatmap cached')
+        print('compressed_county_cases cached')
     else:
         county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
 
@@ -147,7 +147,7 @@ def plots():
         county_deaths=county_deaths.replace("'",r"\'")
         compressed_county_deaths=zlib.compress(county_deaths.encode('utf8'), level=9)
         cache.set('compressed_county_deaths',compressed_county_deaths)
-        print('state_heatmap cached')
+        print('compressed_county_deaths cached')
     else:
         county_deaths=zlib.decompress(compressed_county_deaths).decode('utf8')
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
