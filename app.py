@@ -143,10 +143,12 @@ else:
 
 # create route that renders html templates
 @app.route("/")
+@cache.cached()
 def home():
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
+@cache.cached()
 def plots():
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
