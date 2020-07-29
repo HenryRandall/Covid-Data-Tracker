@@ -83,6 +83,8 @@ def home():
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=922337203685477580)
         print('state_heatmap cached')
+    else:
+        print('found_state_heatmap')
 
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
@@ -90,6 +92,8 @@ def home():
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=922337203685477580)
         print('usa_heatmap cached')
+    else:
+        print('found_usa_heatmap')
 
     county_heatmap=cache.get('county_heatmap')
     if county_heatmap==None:
@@ -99,6 +103,9 @@ def home():
         county_heatmap=county_heatmap.replace("'",r"\'")
         cache.set('county_heatmap',county_heatmap, timeout=922337203685477580)
         print('county_heatmap cached')
+    else:
+        print('found_county_heatmap')
+
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
 @app.route("/plots")
@@ -112,6 +119,8 @@ def plots():
         orders=orders.to_json(orient='records')
         cache.set('orders',orders, timeout=922337203685477580)
         print('orders cached')
+    else:
+        print('found_orders')
 
     state_cases=cache.get('state_cases')
     if state_cases==None:
@@ -119,6 +128,8 @@ def plots():
         state_cases=state_cases.to_json(orient='records')
         cache.set('state_cases',state_cases, timeout=922337203685477580)
         print('state_cases cached')
+    else:
+        print('found_state_cases')
 
     state_deaths=cache.get('state_deaths')
     if state_deaths==None:
@@ -126,6 +137,8 @@ def plots():
         state_deaths=state_deaths.to_json(orient='records')
         cache.set('state_deaths',state_deaths, timeout=922337203685477580)
         print('state_deaths cached')
+    else:
+        print('found_state_deaths')
 
     compressed_county_cases=cache.get('compressed_county_cases')
     if compressed_county_cases==None:
@@ -139,6 +152,7 @@ def plots():
         cache.set('compressed_county_cases',compressed_county_cases, timeout=922337203685477580)
         print('compressed_county_cases cached')
     else:
+        print('found_county_cases')
         print('start decompressions')
         county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
         print('end decompressions')
@@ -155,6 +169,7 @@ def plots():
         cache.set('compressed_county_deaths',compressed_county_deaths, timeout=922337203685477580)
         print('compressed_county_deaths cached')
     else:
+        print('found_county_deaths')
         print('start decompressions')
         county_deaths=zlib.decompress(compressed_county_deaths).decode('utf8')
         print('end decompressions')
