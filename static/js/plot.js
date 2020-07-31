@@ -1,3 +1,22 @@
+// Define which value the heatmap is based on
+function getRadioVal(form, name) {
+  var val;
+  // get list of radio bubbles
+  var radios = form.elements[name];
+  
+  // loop through list of selections
+  for (var i=0, len=radios.length; i<len; i++) {
+      // Check if the bubble is checked
+      if ( radios[i].checked ) { 
+          // Set value and break if true
+          val = radios[i].value;
+          break;
+      }
+  }
+  // Return the value
+  return val;
+};
+
 // Function to initialize page using initial data
 function init() {
   // Grab the dropdown menu and add choices from the dataset
@@ -8,16 +27,16 @@ function init() {
   }
   // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
-  var totalsState = d3.select("#TotalS").property('value');
-  var resultState = d3.select("#ResultS").property('value');
-  StateGraph(stateName,totalsState,resultState)
+  var StateStat = getRadioVal(document.getElementById('StateStat'), 'optionsRadios' );
+  var StateCase = getRadioVal(document.getElementById('StateCase'), 'optionsRadios' );
+  StateGraph(stateName,StateStat,StateCase)
   // Change county dropdown based on state selected
   countySelect(stateName);
   // Pull the county name and option and feed to the graph
   var countyName = d3.select("#Counties").property('value');
-  var totalsCounty = d3.select("#TotalC").property('value');
-  var resultCounty = d3.select("#ResultC").property('value');
-  CountyGraph(stateName,countyName,totalsCounty,resultCounty)
+  var CountyStat = getRadioVal(document.getElementById('CountyStat'), 'optionsRadios' );
+  var CountyCase = getRadioVal(document.getElementById('CountyCase'), 'optionsRadios' );
+  CountyGraph(stateName,countyName,CountyStat,CountyCase)
 };
 
 // Change county dropdown based on selected state
@@ -37,16 +56,16 @@ function countySelect(stateName) {
 d3.select('#States').on('change', function() {
   // Pull the state name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
-  var totalsState = d3.select("#TotalS").property('value');
-  var resultState = d3.select("#ResultS").property('value');
-  StateGraph(stateName,totalsState,resultState)
+  var StateStat = getRadioVal(document.getElementById('StateStat'), 'optionsRadios' );
+  var StateCase = getRadioVal(document.getElementById('StateCase'), 'optionsRadios' );
+  StateGraph(stateName,StateStat,StateCase)
   // Change county dropdown based on state selected
   countySelect(stateName);
   // Pull the county name and option and feed to the graph
   var countyName = d3.select("#Counties").property('value');
-  var totalsCounty = d3.select("#TotalC").property('value');
-  var resultCounty = d3.select("#ResultC").property('value');
-  CountyGraph(stateName,countyName,totalsCounty,resultCounty)
+  var CountyStat = getRadioVal(document.getElementById('CountyStat'), 'optionsRadios' );
+  var CountyCase = getRadioVal(document.getElementById('CountyCase'), 'optionsRadios' );
+  CountyGraph(stateName,countyName,CountyStat,CountyCase)
 });
 
 // Event listener for the county name
@@ -54,47 +73,20 @@ d3.select('#Counties').on('change', function() {
   // Pull the county name and option and feed to the graph
   var stateName = d3.select("#States").property('value');
   var countyName = d3.select("#Counties").property('value');
-  var totalsCounty = d3.select("#TotalC").property('value');
-  var resultCounty = d3.select("#ResultC").property('value');
-  CountyGraph(stateName,countyName,totalsCounty,resultCounty)
+  var CountyStat = getRadioVal(document.getElementById('CountyStat'), 'optionsRadios' );
+  var CountyCase = getRadioVal(document.getElementById('CountyCase'), 'optionsRadios' );
+  CountyGraph(stateName,countyName,CountyStat,CountyCase)
 });
 
-// Event listener for the state option
-d3.select('#TotalS').on('change', function() {
-  // Pull the state name and option and feed to the graph
+$('input[type=radio]').change( function() {
   var stateName = d3.select("#States").property('value');
-  var totalsState = d3.select("#TotalS").property('value');
-  var resultState = d3.select("#ResultS").property('value');
-  StateGraph(stateName,totalsState,resultState)
-});
-
-// Event listener for the county option
-d3.select('#TotalC').on('change', function() {
-  // Pull the county name and option and feed to the graph
-  var stateName = d3.select("#States").property('value');
+  var StateStat = getRadioVal(document.getElementById('StateStat'), 'optionsRadios' );
+  var StateCase = getRadioVal(document.getElementById('StateCase'), 'optionsRadios' );
   var countyName = d3.select("#Counties").property('value');
-  var totalsCounty = d3.select("#TotalC").property('value');
-  var resultCounty = d3.select("#ResultC").property('value');
-  CountyGraph(stateName,countyName,totalsCounty,resultCounty)
-});
-
-// Event listener for the state value
-d3.select('#ResultS').on('change', function() {
-  // Pull the state name and option and feed to the graph
-  var stateName = d3.select("#States").property('value');
-  var totalsState = d3.select("#TotalS").property('value');
-  var resultState = d3.select("#ResultS").property('value');
-  StateGraph(stateName,totalsState,resultState)
-});
-
-// Event listener for the county value
-d3.select('#ResultC').on('change', function() {
-  // Pull the county name and option and feed to the graph
-  var stateName = d3.select("#States").property('value');
-  var countyName = d3.select("#Counties").property('value');
-  var totalsCounty = d3.select("#TotalC").property('value');
-  var resultCounty = d3.select("#ResultC").property('value');
-  CountyGraph(stateName,countyName,totalsCounty,resultCounty)
+  var CountyStat = getRadioVal(document.getElementById('CountyStat'), 'optionsRadios' );
+  var CountyCase = getRadioVal(document.getElementById('CountyCase'), 'optionsRadios' );
+  StateGraph(stateName,StateStat,StateCase)
+  CountyGraph(stateName,countyName,CountyStat,CountyCase)
 });
 
 // Function find average
@@ -199,9 +191,9 @@ function StateGraph(stateName,type,variable) {
         label: label,
         fill: false,
         borderColor: "#000000",
-        pointBackgroundColor: "#82CAFA",
+        pointBackgroundColor: "#FFFFFF",
         pointBorderColor: "#000000",
-        pointHoverBackgroundColor: "#0000FF",
+        pointHoverBackgroundColor: "#000000",
         data: values
       }],
       datasetFill: false,
@@ -210,15 +202,25 @@ function StateGraph(stateName,type,variable) {
     },
     options: {
       scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          },
+        }],
         yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: label
+          },
           ticks: {
             beginAtZero: false
-          }
-        }]
+          },
+        }],
       },
       legend: {
         display: false
-      }
+      },
     }
   };
 
@@ -244,6 +246,12 @@ function StateGraph(stateName,type,variable) {
       ctx.lineWidth= 3;
       ctx.lineTo(xaxis.getPixelForValue(undefined, index1), yaxis.bottom);
       ctx.stroke();
+      ctx.textAlign = 'end';
+      ctx.font="20px sans-serif";
+      ctx.fillStyle='#000000';
+      ctx.translate(xaxis.getPixelForValue(undefined, index1) - 10, yaxis.top + 30);
+      ctx.rotate(-0.5 * Math.PI);
+      ctx.fillText("Quarantine Begin", 0, 0);
       ctx.restore();
 
       // End date line
@@ -254,14 +262,13 @@ function StateGraph(stateName,type,variable) {
       ctx.lineWidth= 3;
       ctx.lineTo(xaxis.getPixelForValue(undefined, index2), yaxis.bottom);
       ctx.stroke();
-      ctx.restore();
-
       ctx.textAlign = 'end';
       ctx.font="20px sans-serif";
       ctx.fillStyle='#000000';
-      ctx.fillText("Quarantine Begin", xaxis.getPixelForValue(undefined, index1), yaxis.top + 16);
-      ctx.textAlign = 'start';
-      ctx.fillText("Quarantine End", xaxis.getPixelForValue(undefined, index2), yaxis.top + 16);
+      ctx.translate(xaxis.getPixelForValue(undefined, index2) - 10, yaxis.top + 30);
+      ctx.rotate(-0.5 * Math.PI);
+      ctx.fillText("Quarantine End", 0, 0);
+      ctx.restore();
     }
   });
 
@@ -356,9 +363,9 @@ function CountyGraph(stateName,countyName,type,variable) {
         label: label,
         fill: false,
         borderColor: "#000000",
-        pointBackgroundColor: "#82CAFA",
+        pointBackgroundColor: "#FFFFFF",
         pointBorderColor: "#000000",
-        pointHoverBackgroundColor: "#0000FF",
+        pointHoverBackgroundColor: "#000000",
         data: values
       }],
       datasetFill: false,
@@ -367,7 +374,17 @@ function CountyGraph(stateName,countyName,type,variable) {
     },
     options: {
       scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          },
+        }],
         yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: label
+          },
           ticks: {
             beginAtZero: false
           }

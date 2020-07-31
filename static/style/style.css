@@ -43,3 +43,7 @@ body {
 li a:hover{
     color:#007bff
 }
+
+form {
+    padding:5px
+}
