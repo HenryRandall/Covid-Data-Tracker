@@ -55,38 +55,29 @@
           <div class="card-header">Definitions and Explanations</div>
           <div class="card-body">
             <h4 class="card-title", id='state_name'></h4>
-            <ul>
-              <li>Total, Daily and 7 Day Average:
+              Total, Daily and 7 Day Average:
                 <ul>
                   <li>The total cases and deaths are pulled directly from the John's Hopkin's github 
                     repository.</li>
-                  <li>Daily cases are found by calculating the change in total cases from the previous day 
-                    to the current day. Daily cases and deaths are sometimes negative, this happens 
-                    when the a state or county changes corrects a change in the total cases or deaths
-                    after the original reporting.</li>
-                  <li>The 7 day average is calculated by taking the previous week from the current
-                    date and averaging the daily cases.
-                  </li>
+                  <li>Daily cases are found by calculating the change in total cases from the previous 
+                    day. Daily cases and deaths are sometimes negative, this happens when the a state 
+                    or county changes the total cases or deaths after the original reporting.</li>
+                  <li><p>The 7 day average is calculated by taking the previous week from the current
+                    date and averaging the daily cases or deaths.</li>
                 </ul>
-              </li>
-              <li>States and Counties:
+              States and Counties:
                 <ul>
                   <li>The Johns Hopkins Github repositiory give data for each county and for 
-                    "unassigned" and "out of state" cases for each state. The numbers we use for
-                    states are the summation of all the counties, and the unassigned and out of state
-                    categories. However, the unassigned and out of state cases do not appear in the 
-                    county data.</li>
+                    "unassigned" and "out of state" within each state. The numbers we use for
+                    states are the summation of all three. However, the unassigned and out of state 
+                    cases do not appear in the county data.</li>
                 </ul>
-              </li>
-              <li>Order Dates:
+              Order Dates:
                 <ul>
-                  <li>The order dates are pulled from FINRA. These dates are when states gave 
-                    "Shelter-in-Place" or "Stay-at-Home" orders. Certain counties might have had 
-                    stricter quarantines; however, these are the minimum quarantine periods for 
-                    each state.</li>
+                  <li>The order dates are from FINRA. These dates are statewide "Shelter-in-Place" 
+                    or "Stay-at-Home" orders; however, certain counties might have had stricter 
+                    quarantine periods.</li>
                 </ul>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
