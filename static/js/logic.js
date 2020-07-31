@@ -201,18 +201,6 @@ function getRadioVal(form, name) {
 var statelink = "static/data/stateborders.json";
 var countylink = "static/data/countyborders.json";
 
-// Pulling in the State GeoJSON
-var xhReq = new XMLHttpRequest();
-xhReq.open("GET", statelink, false);
-xhReq.send(null);
-var stateborders = JSON.parse(xhReq.responseText);
-
-// Pulling in the County GeoJSON
-var xhReq = new XMLHttpRequest();
-xhReq.open("GET", countylink, false);
-xhReq.send(null);
-var countyborders = JSON.parse(xhReq.responseText);
-
 // Fill in the chart for the USA data
 document.getElementById("usa_cases").innerHTML=usa_heatmap[0].total_cases
 document.getElementById("usa_deaths").innerHTML=usa_heatmap[0].total_deaths
@@ -280,7 +268,7 @@ function maps(valuetype) {
     countyup=get_percentile(90,valuescounty);
     
     // Add County Map
-    var countymap = L.geoJson(countyborders, {
+    var countymap = L.geoJson.ajax(countylink, {
         style: function (feature) {
             return {
                 color: "white",
@@ -311,7 +299,7 @@ function maps(valuetype) {
     });
 
     // Add State Map
-    var statemap = L.geoJson(stateborders, {
+    var statemap = L.geoJson.ajax(statelink, {
         style: function (feature) {
             return {
                 color: "white",
@@ -347,7 +335,7 @@ function maps(valuetype) {
     });
 
     // State Borders for the County Outlines
-    var stateoutlinemap = L.geoJson(stateborders, {
+    var stateoutlinemap = L.geoJson.ajax(statelink, {
         style: function (feature) {
             return {
 
