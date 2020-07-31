@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Methodology</title>
-  <link rel="icon" href="static\images\favicon.ico">
+  <link rel="icon" href="\static\images\favicon.ico">
   
   <!-- d3 JavaScript -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
 
   <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="static\style\lux.min.css">
-  <link rel="stylesheet" type="text/css" href="static\style\style.css">
+  <link rel="stylesheet" type="text/css" href="\static\style\lux.min.css">
+  <link rel="stylesheet" type="text/css" href="\static\style\style.css">
 
   <link rel="shortcut icon" href="#" />
 </head>
@@ -44,66 +44,98 @@
   <br></br>
   <div class="container">
     <div class="row">
-      <h6>The aim of this project is to create an interactive dashboard that includes several different 
-        visualizations of COVID-19 data including tables, maps, and charts in near real-time at the 
-        national, state, and county levels.</h6>
+      <h6>The aim of this project is to create an interactive dashboard that includes several 
+        different visualizations of COVID-19 data including tables, maps, and charts in near 
+        real-time at the national, state, and county levels.</h6>
       <br></br>
     </div>
     <div class="row row-whith-wide-cards">
       <div class="col-md-6 d-flex align-items-stretch">
         <div class="card border-secondary mb-3">
-          <div class="card-header">Number of COVID-19 cases reported per day by state and county levels</div>
+          <div class="card-header">Definitions and Explanations</div>
           <div class="card-body">
             <h4 class="card-title", id='state_name'></h4>
             <ul>
-              <li>What this graph shows: A total of the number of COVID-19 cases reported to public health.</li>
-              <li>What to know about this data:
+              <li>Total, Daily and 7 Day Average:
                 <ul>
-                  <li>This graph shows that we continue to have cases reported every day.</li>
-                  <li>This graph does not track the number of cases reported from one day to the next</li>
-                  <li>As long as cases continue to be reported, this graph will always go up.</li>
+                  <li>The total cases and deaths are pulled directly from the John's Hopkin's github 
+                    repository.</li>
+                  <li>Daily cases are found by calculating the change in total cases from the previous day 
+                    to the current day. Daily cases and deaths are sometimes negative, this happens 
+                    when the a state or county changes corrects a change in the total cases or deaths
+                    after the original reporting.</li>
+                  <li>The 7 day average is calculated by taking the previous week from the current
+                    date and averaging the daily cases.
+                  </li>
+                </ul>
+              </li>
+              <li>States and Counties:
+                <ul>
+                  <li>The Johns Hopkins Github repositiory give data for each county and for 
+                    "unassigned" and "out of state" cases for each state. The numbers we use for
+                    states are the summation of all the counties, and the unassigned and out of state
+                    categories. However, the unassigned and out of state cases do not appear in the 
+                    county data.</li>
+                </ul>
+              </li>
+              <li>Order Dates:
+                <ul>
+                  <li>The order dates are pulled from FINRA. These dates are when states gave 
+                    "Shelter-in-Place" or "Stay-at-Home" orders. Certain counties might have had 
+                    stricter quarantines; however, these are the minimum quarantine periods for 
+                    each state.</li>
                 </ul>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="col-md-6 d-flex align-items-stretch">
-        <div class="card text-white bg-primary mb-3">
-          <div class="card-header">Number of deaths among COVID-19 cases reported per day by state and county levels</div>
-          <div class="card-body">
-            <h4 class="card-title", id='state_name'></h4>
-            <ul>
-              <li>What this graph shows: The number of deaths among people diagnosed with COVID-19 
-                or with COVID-19 listed on their death certificate, recorded by the date a death 
-                occurred.</li>
-              <li> What to know about this data:
-                <ul>
-                  <li>Due to standard delays in the process of recording deaths, it may be several 
-                    days between the day a death occurs and the day the death appears in this graph. 
-                     means the number of deaths reported may change on a day-to-day basis (particularly 
-                     within the past week) as reports of new deaths are received.</li>
-                  <li>This graph includes deaths among people with COVID-19 - COVID-19 may or may not be 
-                    listed as the cause of death on the death certificate</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row row-whith-wide-cards">
       <div class="col-md-6 d-flex align-items-stretch">
         <div class="card text-white bg-primary mb-3">
           <div class="card-header">Machine Learning (Coming Soon)</div>
           <div class="card-body">
             <h4 class="card-title", id='state_name'></h4>
+
+
             <ul>
               <li>Text Text Text.</li>
               <li> Heres some text:
                 <ul>
                   <li>Text</li>
                   <li>Text</li>
+                </ul>
+              </li>
+            </ul>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-whith-wide-cards">
+      <div class="col-md-6 d-flex align-items-stretch">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-header">Libaries Used</div>
+          <div class="card-body">
+            <h4 class="card-title", id='state_name'></h4>
+            <ul>
+              <li><a class="nav-link whiteonblack" href="https://github.com/HenryRandall/Project-2" target="_blank">Our Github Repository</a></li>
+              <li> Python Libraries:
+                <ul>
+                  <li><a class="nav-link whiteonblack" href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://docs.sqlalchemy.org/en/13/" target="_blank">SQLAlchemy</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://pandas.pydata.org/" target="_blank">pandas</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">Beautiful Soup</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://flask-caching.readthedocs.io/en/latest/" target="_blank">Flask-Caching</a></li>
+                </ul>
+              </li>
+              <li><a class="nav-link whiteonblack" href="https://bootswatch.com/" target="_blank">Bootswatch</a></li>
+              <li> Javascript Libraries:
+                <ul>
+                  <li><a class="nav-link whiteonblack" href="https://leafletjs.com/" target="_blank">Leaflet</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://github.com/calvinmetcalf/leaflet-ajax" target="_blank">Leaflet Ajax</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://d3js.org/" target="_blank">D3.js</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://www.chartjs.org/" target="_blank">Chart.js</a></li>
                 </ul>
               </li>
             </ul>
@@ -116,10 +148,15 @@
           <div class="card-body">
             <h4 class="card-title", id='state_name'></h4>
             <ul>
-              <li><a class="nav-link" href="https://github.com/datamade/census" target="_blank">US Census Bureau</a></li>
-              <li><a class="nav-link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank">COVID-19 Data Repository at Johns Hopkins</a></li>
-              <li><a class="nav-link" href="https://www.finra.org/rules-guidance/key-topics/covid-19/shelter-in-place" target="_blank">Financial Industry Regulatory Authority</a></li>
-              <li><a class="nav-link" href="https://covidtracking.com/" target="_blank">The COVID Tracking Project</a></li>
+              <li><a class="nav-link blackonwhite" href="https://github.com/datamade/census" target="_blank">US Census Bureau</a></li>
+              <br></br>
+              <li><a class="nav-link blackonwhite" href="https://github.com/CSSEGISandData/COVID-19" target="_blank">COVID-19 Data Repository at Johns Hopkins</a></li>
+              <br></br>
+              <li><a class="nav-link blackonwhite" href="https://www.finra.org/rules-guidance/key-topics/covid-19/shelter-in-place" target="_blank">Financial Industry Regulatory Authority</a></li>
+              <br></br>
+              <li><a class="nav-link blackonwhite" href="https://covidtracking.com/" target="_blank">The COVID Tracking Project</a></li>
+              <br></br>
+              <li><a class="nav-link blackonwhite" href="https://eric.clst.org/tech/usgeojson/" target="_blank">Eric Celeste GeoJSON data for the United States</a></li>
             </ul>
           </div>
         </div>
