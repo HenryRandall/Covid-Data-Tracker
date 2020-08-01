@@ -49,30 +49,36 @@
     </div>
     <!-- Add dropdown elements for state plots-->
     <div class="row">
-      <select id="States"></select>
-      <form id="StateStat">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active">
-            <input type="radio" name="optionsRadios" id="option1" autocomplete="off" value="Total" checked=""> Total
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option2" autocomplete="off" value="Daily"> Daily
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option3" autocomplete="off" value="7 Day Average"> 7 Day Average
-          </label>
-        </div>
-      </form>
-      <form id="StateCase">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active">
-            <input type="radio" name="optionsRadios" id="option4" autocomplete="off" value="Cases" checked=""> Cases
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option5" autocomplete="off" value="Deaths"> Deaths
-          </label>
-        </div>
-      </form>
+      <div class="col-md-4">
+        <select class="custom-select" Id="States"></select>
+      </div>
+      <div class="col-md-4">
+        <form id="StateStat">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" name="optionsRadios" id="option1" autocomplete="off" value="Total" checked=""> Total
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option2" autocomplete="off" value="Daily"> Daily
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option3" autocomplete="off" value="7 Day Average"> 7 Day Average
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <form id="StateCase">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" name="optionsRadios" id="option4" autocomplete="off" value="Cases" checked=""> Cases
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option5" autocomplete="off" value="Deaths"> Deaths
+            </label>
+          </div>
+        </form>
+      </div>
     </div>
     <br></br>
     <!-- State Plot -->
@@ -91,30 +97,36 @@
     </div>
     <!-- Add dropdown elements for county plots-->
     <div class="row">
-      <select id="Counties"></select>
-      <form id="CountyStat">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active">
-            <input type="radio" name="optionsRadios" id="option6" autocomplete="off" value="Total" checked=""> Total
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option7" autocomplete="off" value="Daily"> Daily
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option8" autocomplete="off" value="7 Day Average"> 7 Day Average
-          </label>
-        </div>
-      </form>
-      <form id="CountyCase">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active">
-            <input type="radio" name="optionsRadios" id="option9" autocomplete="off" value="Cases" checked=""> Cases
-          </label>
-          <label class="btn btn-primary">
-            <input type="radio" name="optionsRadios" id="option10" autocomplete="off" value="Deaths"> Deaths
-          </label>
-        </div>
-      </form>
+      <div class="col-md-4">
+        <select class="custom-select" Id="Counties"></select>
+      </div>
+      <div class="col-md-4">
+        <form id="CountyStat">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" name="optionsRadios" id="option6" autocomplete="off" value="Total" checked=""> Total
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option7" autocomplete="off" value="Daily"> Daily
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option8" autocomplete="off" value="7 Day Average"> 7 Day Average
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <form id="CountyCase">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" name="optionsRadios" id="option9" autocomplete="off" value="Cases" checked=""> Cases
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="optionsRadios" id="option10" autocomplete="off" value="Deaths"> Deaths
+            </label>
+          </div>
+        </form>
+      </div>
     </div>
     <br></br>
     <!-- County Plot -->
