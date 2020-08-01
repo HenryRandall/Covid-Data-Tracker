@@ -175,6 +175,7 @@ def plots():
         print('end decompressions')
         compressed_county_cases2=cache.get('compressed_county_cases2')
 
+    compressed_county_cases3=cache.get('compressed_county_cases3')
     if compressed_county_cases3==None:
         county_cases3=pd.read_sql_query('select * from county_cases3', con=engine1)
         county_cases3=county_cases3.to_json(orient='records')
