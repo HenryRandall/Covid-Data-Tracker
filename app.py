@@ -146,16 +146,12 @@ def plots():
         county_cases1=county_cases1.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases1=county_cases1.replace("'",r"\'")
-        print('start compressions')
         compressed_county_cases1=zlib.compress(county_cases1.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_cases1',compressed_county_cases1, timeout=922337203685477580)
         print('compressed_county_cases1 cached')
     else:
         print('found_county_cases1')
-        print('start decompressions')
         county_cases1=zlib.decompress(compressed_county_cases1).decode('utf8')
-        print('end decompressions')
 
     compressed_county_cases2=cache.get('compressed_county_cases2')
     if compressed_county_cases2==None:
@@ -163,16 +159,12 @@ def plots():
         county_cases2=county_cases2.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases2=county_cases2.replace("'",r"\'")
-        print('start compressions')
         compressed_county_cases2=zlib.compress(county_cases2.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_cases2',compressed_county_cases2, timeout=922337203685477580)
         print('compressed_county_cases2 cached')
     else:
         print('found_county_cases2')
-        print('start decompressions')
         county_cases2=zlib.decompress(compressed_county_cases2).decode('utf8')
-        print('end decompressions')
         compressed_county_cases2=cache.get('compressed_county_cases2')
 
     compressed_county_cases3=cache.get('compressed_county_cases3')
@@ -181,16 +173,12 @@ def plots():
         county_cases3=county_cases3.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases3=county_cases3.replace("'",r"\'")
-        print('start compressions')
         compressed_county_cases3=zlib.compress(county_cases3.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_cases3',compressed_county_cases3, timeout=922337203685477580)
         print('compressed_county_cases3 cached')
     else:
         print('found_county_cases3')
-        print('start decompressions')
         county_cases3=zlib.decompress(compressed_county_cases3).decode('utf8')
-        print('end decompressions')
 
     compressed_county_deaths1=cache.get('compressed_county_deaths1')
     if compressed_county_deaths1==None:
@@ -198,16 +186,12 @@ def plots():
         county_deaths1=county_deaths1.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths1=county_deaths1.replace("'",r"\'")
-        print('start compressions')
         compressed_county_deaths1=zlib.compress(county_deaths1.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_deaths1',compressed_county_deaths1, timeout=922337203685477580)
         print('compressed_county_deaths1 cached')
     else:
         print('found_county_deaths1')
-        print('start decompressions')
         county_deaths1=zlib.decompress(compressed_county_deaths1).decode('utf8')
-        print('end decompressions')
 
     compressed_county_deaths2=cache.get('compressed_county_deaths2')
     if compressed_county_deaths2==None:
@@ -215,16 +199,12 @@ def plots():
         county_deaths2=county_deaths2.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths2=county_deaths2.replace("'",r"\'")
-        print('start compressions')
         compressed_county_deaths2=zlib.compress(county_deaths2.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_deaths2',compressed_county_deaths2, timeout=922337203685477580)
         print('compressed_county_deaths2 cached')
     else:
         print('found_county_deaths2')
-        print('start decompressions')
         county_deaths2=zlib.decompress(compressed_county_deaths2).decode('utf8')
-        print('end decompressions')
 
     compressed_county_deaths3=cache.get('compressed_county_deaths3')
     if compressed_county_deaths3==None:
@@ -232,16 +212,12 @@ def plots():
         county_deaths3=county_deaths3.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths3=county_deaths3.replace("'",r"\'")
-        print('start compressions')
         compressed_county_deaths3=zlib.compress(county_deaths3.encode('utf8'), level=9)
-        print('end compressions')
         cache.set('compressed_county_deaths3',compressed_county_deaths3, timeout=922337203685477580)
         print('compressed_county_deaths cached')
     else:
         print('found_county_deaths3')
-        print('start decompressions')
         county_deaths3=zlib.decompress(compressed_county_deaths3).decode('utf8')
-        print('end decompressions')
 
     county_cases=county_cases1+county_cases2+county_cases3
     county_cases=county_cases.replace("][",r",")
@@ -258,4 +234,4 @@ def aboutus():
     return render_template("aboutus.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=Flase)
