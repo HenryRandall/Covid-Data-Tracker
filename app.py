@@ -243,10 +243,8 @@ def plots():
         county_deaths3=zlib.decompress(compressed_county_deaths3).decode('utf8')
         print('end decompressions')
 
-    county_cases = [county_cases1,county_cases2,county_cases3]
-    county_cases = pd.concat(county_cases)
-    county_deaths = [county_cases1,county_cases2,county_cases3]
-    county_deaths = pd.concat(county_deaths)
+    county_cases = county_cases1+county_cases2+county_cases3
+    county_deaths = county_cases1+county_cases2+county_cases3
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
 @app.route("/methodology")
