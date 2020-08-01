@@ -140,39 +140,112 @@ def plots():
     else:
         print('found_state_deaths')
 
-    compressed_county_cases=cache.get('compressed_county_cases')
-    if compressed_county_cases==None:
-        county_cases=pd.read_sql_query('select * from county_cases', con=engine1)
-        county_cases=county_cases.to_json(orient='records')
+    compressed_county_cases1=cache.get('compressed_county_cases1')
+    if compressed_county_cases1==None:
+        county_cases1=pd.read_sql_query('select * from county_cases1', con=engine1)
+        county_cases1=county_cases1.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
-        county_cases=county_cases.replace("'",r"\'")
+        county_cases1=county_cases1.replace("'",r"\'")
         print('start compressions')
-        compressed_county_cases=zlib.compress(county_cases.encode('utf8'), level=9)
+        compressed_county_cases1=zlib.compress(county_cases1.encode('utf8'), level=9)
         print('end compressions')
-        cache.set('compressed_county_cases',compressed_county_cases, timeout=922337203685477580)
-        print('compressed_county_cases cached')
+        cache.set('compressed_county_cases1',compressed_county_cases1, timeout=922337203685477580)
+        print('compressed_county_cases1 cached')
     else:
-        print('found_county_cases')
+        print('found_county_cases1')
         print('start decompressions')
-        county_cases=zlib.decompress(compressed_county_cases).decode('utf8')
+        county_cases1=zlib.decompress(compressed_county_cases1).decode('utf8')
         print('end decompressions')
 
-    compressed_county_deaths=cache.get('compressed_county_deaths')
-    if compressed_county_deaths==None:
-        county_deaths=pd.read_sql_query('select * from county_deaths', con=engine1)
-        county_deaths=county_deaths.to_json(orient='records')
+    compressed_county_cases2=cache.get('compressed_county_cases2')
+    if compressed_county_cases2==None:
+        county_cases2=pd.read_sql_query('select * from county_cases2', con=engine1)
+        county_cases2=county_cases2.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
-        county_deaths=county_deaths.replace("'",r"\'")
+        county_cases2=county_cases2.replace("'",r"\'")
         print('start compressions')
-        compressed_county_deaths=zlib.compress(county_deaths.encode('utf8'), level=9)
+        compressed_county_cases2=zlib.compress(county_cases2.encode('utf8'), level=9)
         print('end compressions')
-        cache.set('compressed_county_deaths',compressed_county_deaths, timeout=922337203685477580)
+        cache.set('compressed_county_cases2',compressed_county_cases2, timeout=922337203685477580)
+        print('compressed_county_cases2 cached')
+    else:
+        print('found_county_cases2')
+        print('start decompressions')
+        county_cases2=zlib.decompress(compressed_county_cases2).decode('utf8')
+        print('end decompressions')
+        compressed_county_cases2=cache.get('compressed_county_cases2')
+
+    if compressed_county_cases3==None:
+        county_cases3=pd.read_sql_query('select * from county_cases3', con=engine1)
+        county_cases3=county_cases3.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_cases3=county_cases3.replace("'",r"\'")
+        print('start compressions')
+        compressed_county_cases3=zlib.compress(county_cases3.encode('utf8'), level=9)
+        print('end compressions')
+        cache.set('compressed_county_cases3',compressed_county_cases3, timeout=922337203685477580)
+        print('compressed_county_cases3 cached')
+    else:
+        print('found_county_cases3')
+        print('start decompressions')
+        county_cases3=zlib.decompress(compressed_county_cases3).decode('utf8')
+        print('end decompressions')
+
+    compressed_county_deaths1=cache.get('compressed_county_deaths1')
+    if compressed_county_deaths1==None:
+        county_deaths1=pd.read_sql_query('select * from county_deaths1', con=engine1)
+        county_deaths1=county_deaths1.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_deaths1=county_deaths1.replace("'",r"\'")
+        print('start compressions')
+        compressed_county_deaths1=zlib.compress(county_deaths1.encode('utf8'), level=9)
+        print('end compressions')
+        cache.set('compressed_county_deaths1',compressed_county_deaths1, timeout=922337203685477580)
+        print('compressed_county_deaths1 cached')
+    else:
+        print('found_county_deaths1')
+        print('start decompressions')
+        county_deaths1=zlib.decompress(compressed_county_deaths1).decode('utf8')
+        print('end decompressions')
+
+    compressed_county_deaths2=cache.get('compressed_county_deaths2')
+    if compressed_county_deaths2==None:
+        county_deaths2=pd.read_sql_query('select * from county_deaths2', con=engine1)
+        county_deaths2=county_deaths2.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_deaths2=county_deaths2.replace("'",r"\'")
+        print('start compressions')
+        compressed_county_deaths2=zlib.compress(county_deaths2.encode('utf8'), level=9)
+        print('end compressions')
+        cache.set('compressed_county_deaths2',compressed_county_deaths2, timeout=922337203685477580)
+        print('compressed_county_deaths2 cached')
+    else:
+        print('found_county_deaths2')
+        print('start decompressions')
+        county_deaths2=zlib.decompress(compressed_county_deaths2).decode('utf8')
+        print('end decompressions')
+
+    compressed_county_deaths3=cache.get('compressed_county_deaths3')
+    if compressed_county_deaths3==None:
+        county_deaths3=pd.read_sql_query('select * from county_deaths3', con=engine1)
+        county_deaths3=county_deaths3.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_deaths3=county_deaths3.replace("'",r"\'")
+        print('start compressions')
+        compressed_county_deaths3=zlib.compress(county_deaths3.encode('utf8'), level=9)
+        print('end compressions')
+        cache.set('compressed_county_deaths3',compressed_county_deaths3, timeout=922337203685477580)
         print('compressed_county_deaths cached')
     else:
-        print('found_county_deaths')
+        print('found_county_deaths3')
         print('start decompressions')
-        county_deaths=zlib.decompress(compressed_county_deaths).decode('utf8')
+        county_deaths3=zlib.decompress(compressed_county_deaths3).decode('utf8')
         print('end decompressions')
+
+    county_cases = [county_cases1,county_cases2,county_cases3]
+    county_cases = pd.concat(county_cases)
+    county_deaths = [county_cases1,county_cases2,county_cases3]
+    county_deaths = pd.concat(county_deaths)
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
 
 @app.route("/methodology")
