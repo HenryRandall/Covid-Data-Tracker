@@ -47,3 +47,10 @@ li a:hover{
 form {
     padding:5px
 }
+
+select {
+    padding:5px;
+    border: 1px solid;
+    border-color: #000000;
+    font-size:20px;
+}
