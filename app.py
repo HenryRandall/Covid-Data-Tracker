@@ -234,4 +234,4 @@ def aboutus():
     return render_template("aboutus.html")
 
 if __name__ == "__main__":
-    app.run(debug=Flase)
+    app.run(debug=False)
