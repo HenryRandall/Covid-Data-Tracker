@@ -370,7 +370,7 @@ function CountyGraph(stateName,countyName,type,variable) {
       index2 = Number(date)+1;
     }
     if (today == lastDate) {
-      index3 = number(date+1);
+      index3 = number(date)+1;
       break;
     }
   }
