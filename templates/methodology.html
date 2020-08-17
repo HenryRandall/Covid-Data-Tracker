@@ -76,22 +76,36 @@
       </div>
       <div class="col-md-6 d-flex align-items-stretch">
         <div class="card text-white bg-primary mb-3">
-          <div class="card-header">Machine Learning (Coming Soon)</div>
+          <div class="card-header">Machine Learning Projections</div>
           <div class="card-body">
             <h4 class="card-title", id='state_name'></h4>
-
-
             <ul>
-              <li>Text Text Text.</li>
-              <li> Heres some text:
+              <li>Cases Projections
                 <ul>
-                  <li>Text</li>
-                  <li>Text</li>
+                  <li>A TensorFlow nueral net was used with a ReLU activate. The variables used
+                    were Population Density, Black population share, Hispanic population share, 
+                    Median age, Current case total, 7 Day average case totals, and the 7 day 
+                    average of close proximity cases.
+                  </li>
+                  <li>All data is pulled from the Johns Hopkins Github Repository, 
+                    or the Python Census API using the 2019 census eastimates</li>
+                  <li>Close proximity cases are calculated by summing every county 
+                    within a 5 degree radius from the county in question. This is calculated using the 
+                    latitude and longitude for each county on the Johns Hopkins Github.</li>
+                </ul>
+              </li>
+              <li>Death Projections
+                <ul>                
+                  <li>A TensorFlow nueral net was used with a ReLU activate. The variables used
+                    were Population Density, Black population share, Hispanic population share, 
+                    Medain household income, Median age, Current case total, 7 Day average case totals,
+                    and the 7 day average of close proximity cases.
+                  </li>
+                  <li>All data is pulled from the Johns Hopkins Github Repository, 
+                    or the Python Census API using the 2019 census eastimates</li>
                 </ul>
               </li>
             </ul>
-
-
           </div>
         </div>
       </div>
@@ -111,6 +125,8 @@
                   <li><a class="nav-link whiteonblack" href="https://pandas.pydata.org/" target="_blank">pandas</a></li>
                   <li><a class="nav-link whiteonblack" href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">Beautiful Soup</a></li>
                   <li><a class="nav-link whiteonblack" href="https://flask-caching.readthedocs.io/en/latest/" target="_blank">Flask-Caching</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://keras.io/" target="_blank">Keras</a></li>
+                  <li><a class="nav-link whiteonblack" href="https://www.tensorflow.org/" target="_blank">TensorFlow</a></li>
                 </ul>
               </li>
               <li><a class="nav-link whiteonblack" href="https://bootswatch.com/" target="_blank">Bootswatch</a></li>
