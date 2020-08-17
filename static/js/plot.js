@@ -156,15 +156,17 @@ function StateGraph(stateName,type,variable) {
     orderDates.push(orderData[stateOrders[orderDate]]);
   };
   
-  // Set the order dates as a global variable to be used in the county graph as well
+  // Set the order dates and last date as a global variable to be used in the county graph as well
   window.orderImplementation= (new Date(orderDates[1])).toLocaleDateString('en-US');
   window.orderExpiration= (new Date(orderDates[2])).toLocaleDateString('en-US');
+  window.lastDate= (new Date(usa_heatmap[0].lastdate)).toLocaleDateString('en-US');
 
-  // Set indexes null in case that there isnt one
+  // Set indexes null in case that there isn't one
   index1 = undefined;
   index2 = undefined;
+  index3 = undefined;
 
-  // find the index value for the order dates
+  // find the index value for the order dates and last date of available case data
   for (var date in dates) {
     today=(new Date(dates[date])).toLocaleDateString('en-US');
     if (today == orderImplementation) {
@@ -172,11 +174,14 @@ function StateGraph(stateName,type,variable) {
     }
     if (today == orderExpiration) {
       index2 = Number(date)+1;
+    }
+    if (today == lastDate) {
+      index3 = Number(date)+1;
       break;
     }
   }
 
-  //  Romove old plots and reset
+  //  Remove old plots and reset
   $('#Splot').remove();
   $('#Sgraph-container').html('<canvas id="Splot"></canvas>');
 
@@ -198,7 +203,8 @@ function StateGraph(stateName,type,variable) {
       }],
       datasetFill: false,
       lineAtIndex1: index1,
-      lineAtIndex2: index2
+      lineAtIndex2: index2,
+      lineAtIndex3: index3
     },
     options: {
       scales: {
@@ -235,10 +241,11 @@ function StateGraph(stateName,type,variable) {
 
       var index1 = chart.config.data.lineAtIndex1;
       var index2 = chart.config.data.lineAtIndex2;
+      var index3 = chart.config.data.lineAtIndex3;
       var xaxis = chart.scales['x-axis-0'];
       var yaxis = chart.scales['y-axis-0'];
 
-      // Begin date line
+      // Begin quarantine date line
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(xaxis.getPixelForValue(undefined, index1), yaxis.top + 24);
@@ -254,7 +261,7 @@ function StateGraph(stateName,type,variable) {
       ctx.fillText("Quarantine Begin", 0, 0);
       ctx.restore();
 
-      // End date line
+      // End quarantine date line
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(xaxis.getPixelForValue(undefined, index2), yaxis.top + 24);
@@ -268,6 +275,22 @@ function StateGraph(stateName,type,variable) {
       ctx.translate(xaxis.getPixelForValue(undefined, index2) - 10, yaxis.top + 30);
       ctx.rotate(-0.5 * Math.PI);
       ctx.fillText("Quarantine End", 0, 0);
+      ctx.restore();
+
+      // ML projections begin line
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(xaxis.getPixelForValue(undefined, index3), yaxis.top + 24);
+      ctx.strokeStyle = '#FF8C00';
+      ctx.lineWidth= 3;
+      ctx.lineTo(xaxis.getPixelForValue(undefined, index3), yaxis.bottom);
+      ctx.stroke();
+      ctx.textAlign = 'end';
+      ctx.font="20px sans-serif";
+      ctx.fillStyle='#000000';
+      ctx.translate(xaxis.getPixelForValue(undefined, index3) - 10, yaxis.top + 30);
+      ctx.rotate(-0.5 * Math.PI);
+      ctx.fillText("ML Projections", 0, 0);
       ctx.restore();
     }
   });
@@ -332,11 +355,12 @@ function CountyGraph(stateName,countyName,type,variable) {
     dates=dates.slice(6);
   }
 
-  // Set indexes null in case that there isnt one
+  // Set indexes null in case that there isn't one
   index1 = undefined;
   index2 = undefined;
+  index3 = undefined;
 
-  // find the index value for the order dates
+  // find the index value for the order dates and last date of available case data
   for (var date in dates) {
     today=(new Date(dates[date])).toLocaleDateString('en-US');
     if (today == orderImplementation) {
@@ -344,11 +368,14 @@ function CountyGraph(stateName,countyName,type,variable) {
     }
     if (today == orderExpiration) {
       index2 = Number(date)+1;
+    }
+    if (today == lastDate) {
+      index3 = number(date+1);
       break;
     }
   }
 
-  //  Romove old plots and reset
+  //  Remove old plots and reset
   $('#Cplot').remove();
   $('#Cgraph-container').html('<canvas id="Cplot"></canvas>');
 
@@ -370,7 +397,8 @@ function CountyGraph(stateName,countyName,type,variable) {
       }],
       datasetFill: false,
       lineAtIndex1: index1,
-      lineAtIndex2: index2
+      lineAtIndex2: index2,
+      lineAtIndex3: index3
     },
     options: {
       scales: {

@@ -140,6 +140,15 @@ def plots():
     else:
         print('found_state_deaths')
 
+    usa_heatmap=cache.get('usa_heatmap')
+    if usa_heatmap==None:
+        usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
+        usa_heatmap=usa_heatmap.to_json(orient='records')
+        cache.set('usa_heatmap',usa_heatmap, timeout=922337203685477580)
+        print('usa_heatmap cached')
+    else:
+        print('found_usa_heatmap')
+
     compressed_county_cases1=cache.get('compressed_county_cases1')
     if compressed_county_cases1==None:
         county_cases1=pd.read_sql_query('select * from county_cases1', con=engine1)
@@ -223,7 +232,7 @@ def plots():
     county_cases=county_cases.replace("][",r",")
     county_deaths=county_deaths1+county_deaths2+county_deaths3
     county_deaths=county_deaths.replace("][",r",")
-    return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, county_cases=county_cases, county_deaths=county_deaths)
+    return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, usa_heatmap=usa_heatmap, county_cases=county_cases, county_deaths=county_deaths)
 
 @app.route("/methodology")
 def methodology():
