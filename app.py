@@ -25,21 +25,14 @@ password1 = os.environ['password1']
 host1 = os.environ['host1']
 port1 = os.environ['port1']
 database1 = os.environ['database1']
-# username2 = os.environ['username2']
-# password2 = os.environ['password2']
-# host2 = os.environ['host2']
-# port2 = os.environ['port2']
-# database2 = os.environ['database2']
 API_KEY = os.environ['API_KEY']
 #################################################
 # Database Setup
 #################################################
 connection1=f'{username1}:{password1}@{host1}:{port1}/{database1}'
 engine1 = create_engine(f'postgresql://{connection1}')
-# connection2=f'{username2}:{password2}@{host2}:{port2}/{database2}'
-# engine2 = create_engine(f'postgresql://{connection2}')
 ################################################
-# Caching
+# Caching Setting
 ################################################
 cache=Cache()
 cache_servers = os.environ.get('MEMCACHIER_SERVERS')
@@ -77,34 +70,32 @@ def home():
     ##############################################################
     # Pull data from SQL datadase and turn it into JSON and cache
     ##############################################################
+    
+    # Check and see if it is chaches already
     state_heatmap=cache.get('state_heatmap')
     if state_heatmap==None:
+        # Pull from Sql and chache if not there
         state_heatmap=pd.read_sql_query('select * from state_heatmap', con=engine1)
         state_heatmap=state_heatmap.to_json(orient='records')
         cache.set('state_heatmap',state_heatmap, timeout=922337203685477580)
-        print('state_heatmap cached')
-    else:
-        print('found_state_heatmap')
 
+    # Check and see if it is chaches already
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
+        # Pull from Sql and chache if not there
         usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=922337203685477580)
-        print('usa_heatmap cached')
-    else:
-        print('found_usa_heatmap')
 
+    # Check and see if it is chaches already
     county_heatmap=cache.get('county_heatmap')
     if county_heatmap==None:
+        # Pull from Sql and chache if not there
         county_heatmap=pd.read_sql_query('select * from county_heatmap', con=engine1)
         county_heatmap=county_heatmap.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_heatmap=county_heatmap.replace("'",r"\'")
         cache.set('county_heatmap',county_heatmap, timeout=922337203685477580)
-        print('county_heatmap cached')
-    else:
-        print('found_county_heatmap')
 
     return render_template("index.html", state_heatmap=state_heatmap, usa_heatmap=usa_heatmap, county_heatmap=county_heatmap, API_KEY=API_KEY)
 
@@ -113,121 +104,124 @@ def plots():
     ##############################################################
     # Pull data from SQL datadase and turn it into JSON and cache
     ##############################################################
+
+    # Check and see if it is chaches already
     orders=cache.get('orders')
     if orders==None:
+        # Pull from Sql and chache if not there
         orders=pd.read_sql_query('select * from orders', con=engine1)
         orders=orders.to_json(orient='records')
         cache.set('orders',orders, timeout=922337203685477580)
-        print('orders cached')
-    else:
-        print('found_orders')
 
+    # Check and see if it is chaches already
     state_cases=cache.get('state_cases')
     if state_cases==None:
+        # Pull from Sql and chache if not there
         state_cases=pd.read_sql_query('select * from state_cases', con=engine1)
         state_cases=state_cases.to_json(orient='records')
         cache.set('state_cases',state_cases, timeout=922337203685477580)
-        print('state_cases cached')
-    else:
-        print('found_state_cases')
 
+    # Check and see if it is chaches already
     state_deaths=cache.get('state_deaths')
     if state_deaths==None:
+        # Pull from Sql and chache if not there
         state_deaths=pd.read_sql_query('select * from state_deaths', con=engine1)
         state_deaths=state_deaths.to_json(orient='records')
         cache.set('state_deaths',state_deaths, timeout=922337203685477580)
-        print('state_deaths cached')
-    else:
-        print('found_state_deaths')
 
+    # Check and see if it is chaches already
     usa_heatmap=cache.get('usa_heatmap')
     if usa_heatmap==None:
+        # Pull from Sql and chache if not there
         usa_heatmap=pd.read_sql_query('select * from usa_heatmap', con=engine1)
         usa_heatmap=usa_heatmap.to_json(orient='records')
         cache.set('usa_heatmap',usa_heatmap, timeout=922337203685477580)
-        print('usa_heatmap cached')
-    else:
-        print('found_usa_heatmap')
 
+    # Check and see if it is chaches already
     compressed_county_cases1=cache.get('compressed_county_cases1')
     if compressed_county_cases1==None:
+        # Pull from Sql and chache if not there
         county_cases1=pd.read_sql_query('select * from county_cases1', con=engine1)
         county_cases1=county_cases1.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases1=county_cases1.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_cases1=zlib.compress(county_cases1.encode('utf8'), level=9)
         cache.set('compressed_county_cases1',compressed_county_cases1, timeout=922337203685477580)
-        print('compressed_county_cases1 cached')
     else:
-        print('found_county_cases1')
         county_cases1=zlib.decompress(compressed_county_cases1).decode('utf8')
 
+    # Check and see if it is chaches already
     compressed_county_cases2=cache.get('compressed_county_cases2')
     if compressed_county_cases2==None:
+        # Pull from Sql and chache if not there
         county_cases2=pd.read_sql_query('select * from county_cases2', con=engine1)
         county_cases2=county_cases2.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases2=county_cases2.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_cases2=zlib.compress(county_cases2.encode('utf8'), level=9)
         cache.set('compressed_county_cases2',compressed_county_cases2, timeout=922337203685477580)
-        print('compressed_county_cases2 cached')
     else:
-        print('found_county_cases2')
         county_cases2=zlib.decompress(compressed_county_cases2).decode('utf8')
-        compressed_county_cases2=cache.get('compressed_county_cases2')
 
+    # Check and see if it is chaches already
     compressed_county_cases3=cache.get('compressed_county_cases3')
     if compressed_county_cases3==None:
+        # Pull from Sql and chache if not there
         county_cases3=pd.read_sql_query('select * from county_cases3', con=engine1)
         county_cases3=county_cases3.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_cases3=county_cases3.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_cases3=zlib.compress(county_cases3.encode('utf8'), level=9)
         cache.set('compressed_county_cases3',compressed_county_cases3, timeout=922337203685477580)
-        print('compressed_county_cases3 cached')
     else:
-        print('found_county_cases3')
         county_cases3=zlib.decompress(compressed_county_cases3).decode('utf8')
 
+    # Check and see if it is chaches already
     compressed_county_deaths1=cache.get('compressed_county_deaths1')
     if compressed_county_deaths1==None:
+        # Pull from Sql and chache if not there
         county_deaths1=pd.read_sql_query('select * from county_deaths1', con=engine1)
         county_deaths1=county_deaths1.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths1=county_deaths1.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_deaths1=zlib.compress(county_deaths1.encode('utf8'), level=9)
         cache.set('compressed_county_deaths1',compressed_county_deaths1, timeout=922337203685477580)
-        print('compressed_county_deaths1 cached')
     else:
-        print('found_county_deaths1')
         county_deaths1=zlib.decompress(compressed_county_deaths1).decode('utf8')
 
+    # Check and see if it is chaches already
     compressed_county_deaths2=cache.get('compressed_county_deaths2')
     if compressed_county_deaths2==None:
+        # Pull from Sql and chache if not there
         county_deaths2=pd.read_sql_query('select * from county_deaths2', con=engine1)
         county_deaths2=county_deaths2.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths2=county_deaths2.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_deaths2=zlib.compress(county_deaths2.encode('utf8'), level=9)
         cache.set('compressed_county_deaths2',compressed_county_deaths2, timeout=922337203685477580)
-        print('compressed_county_deaths2 cached')
     else:
-        print('found_county_deaths2')
         county_deaths2=zlib.decompress(compressed_county_deaths2).decode('utf8')
 
+    # Check and see if it is chaches already
     compressed_county_deaths3=cache.get('compressed_county_deaths3')
     if compressed_county_deaths3==None:
+        # Pull from Sql and chache if not there
         county_deaths3=pd.read_sql_query('select * from county_deaths3', con=engine1)
         county_deaths3=county_deaths3.to_json(orient='records')
         # Fix Parsing error where python and javascript look at apostrophes in different ways
         county_deaths3=county_deaths3.replace("'",r"\'")
+        # Run compression to fall under the size limit
         compressed_county_deaths3=zlib.compress(county_deaths3.encode('utf8'), level=9)
         cache.set('compressed_county_deaths3',compressed_county_deaths3, timeout=922337203685477580)
-        print('compressed_county_deaths cached')
     else:
-        print('found_county_deaths3')
         county_deaths3=zlib.decompress(compressed_county_deaths3).decode('utf8')
 
+    # Merge split files
     county_cases=county_cases1+county_cases2+county_cases3
     county_cases=county_cases.replace("][",r",")
     county_deaths=county_deaths1+county_deaths2+county_deaths3
