@@ -179,6 +179,37 @@ def plots():
     else:
         county_cases3=zlib.decompress(compressed_county_cases3).decode('utf8')
 
+
+    # Check and see if it is chaches already
+    compressed_county_cases4=cache.get('compressed_county_cases4')
+    if compressed_county_cases4==None:
+        # Pull from Sql and chache if not there
+        county_cases4=pd.read_sql_query('select * from county_cases4', con=engine1)
+        county_cases4=county_cases4.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_cases4=county_cases4.replace("'",r"\'")
+        # Run compression to fall under the size limit
+        compressed_county_cases4=zlib.compress(county_cases4.encode('utf8'), level=9)
+        cache.set('compressed_county_cases4',compressed_county_cases4, timeout=922337203685477580)
+    else:
+        county_cases4=zlib.decompress(compressed_county_cases4).decode('utf8')
+
+
+    # Check and see if it is chaches already
+    compressed_county_cases5=cache.get('compressed_county_cases5')
+    if compressed_county_cases5==None:
+        # Pull from Sql and chache if not there
+        county_cases5=pd.read_sql_query('select * from county_cases5', con=engine1)
+        county_cases5=county_cases5.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_cases5=county_cases3.replace("'",r"\'")
+        # Run compression to fall under the size limit
+        compressed_county_cases5=zlib.compress(county_cases5.encode('utf8'), level=9)
+        cache.set('compressed_county_cases5',compressed_county_cases5, timeout=922337203685477580)
+    else:
+        county_cases5=zlib.decompress(compressed_county_cases5).decode('utf8')
+
+
     # Check and see if it is chaches already
     compressed_county_deaths1=cache.get('compressed_county_deaths1')
     if compressed_county_deaths1==None:
@@ -221,10 +252,38 @@ def plots():
     else:
         county_deaths3=zlib.decompress(compressed_county_deaths3).decode('utf8')
 
+    # Check and see if it is chaches already
+    compressed_county_deaths4=cache.get('compressed_county_deaths4')
+    if compressed_county_deaths4==None:
+        # Pull from Sql and chache if not there
+        county_deaths4=pd.read_sql_query('select * from county_deaths4', con=engine1)
+        county_deaths4=county_deaths4.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_deaths4=county_deaths4.replace("'",r"\'")
+        # Run compression to fall under the size limit
+        compressed_county_deaths4=zlib.compress(county_deaths4.encode('utf8'), level=9)
+        cache.set('compressed_county_deaths4',compressed_county_deaths4, timeout=922337203685477580)
+    else:
+        county_deaths4=zlib.decompress(compressed_county_deaths4).decode('utf8')
+
+    # Check and see if it is chaches already
+    compressed_county_deaths5=cache.get('compressed_county_deaths5')
+    if compressed_county_deaths5==None:
+        # Pull from Sql and chache if not there
+        county_deaths5=pd.read_sql_query('select * from county_deaths5', con=engine1)
+        county_deaths5=county_deaths5.to_json(orient='records')
+        # Fix Parsing error where python and javascript look at apostrophes in different ways
+        county_deaths5=county_deaths5.replace("'",r"\'")
+        # Run compression to fall under the size limit
+        compressed_county_deaths5=zlib.compress(county_deaths5.encode('utf8'), level=9)
+        cache.set('compressed_county_deaths5',compressed_county_deaths5, timeout=922337203685477580)
+    else:
+        county_deaths5=zlib.decompress(compressed_county_deaths5).decode('utf8')
+
     # Merge split files
-    county_cases=county_cases1+county_cases2+county_cases3
+    county_cases=county_cases1+county_cases2+county_cases3+county_cases4+county_cases5
     county_cases=county_cases.replace("][",r",")
-    county_deaths=county_deaths1+county_deaths2+county_deaths3
+    county_deaths=county_deaths1+county_deaths2+county_deaths3+county_deaths4+county_deaths5
     county_deaths=county_deaths.replace("][",r",")
     return render_template("plots.html", orders=orders, state_cases=state_cases, state_deaths=state_deaths, usa_heatmap=usa_heatmap, county_cases=county_cases, county_deaths=county_deaths)
 
